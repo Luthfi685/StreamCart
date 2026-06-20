@@ -31,7 +31,7 @@
         </div>
 
         <!-- Camera View (Simulated Video feed) -->
-        <div class="flex-1 bg-black rounded-2xl overflow-hidden relative shadow-inner group">
+        <div id="cameraContainer" class="bg-black rounded-2xl overflow-hidden relative shadow-inner group" style="aspect-ratio: 4/3; width: 100%;">
             <!-- Wadah khusus untuk video Agora -->
             <div id="agora-local-player" class="absolute inset-0 z-0"></div>
             
@@ -248,6 +248,14 @@ async function toggleRatio() {
         document.getElementById('ratioBtn').innerText = currentRatio;
         document.getElementById('agoraStatus').innerText = "Mengganti Rasio...";
         document.getElementById('agoraStatus').style.display = 'block';
+
+        // Ubah ukuran container kamera secara visual
+        const container = document.getElementById('cameraContainer');
+        if (currentRatio === "16:9") {
+            container.style.aspectRatio = '16/9';
+        } else {
+            container.style.aspectRatio = '4/3';
+        }
 
         // Unpublish track lama
         await client.unpublish([localTracks.videoTrack]);
