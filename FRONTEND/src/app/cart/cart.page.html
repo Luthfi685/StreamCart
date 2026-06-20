@@ -1,0 +1,84 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="font-bold text-lg">Keranjang Belanja</ion-title>
+    <ion-buttons slot="end" *ngIf="groupedCart.length > 0">
+      <ion-button (click)="clearCart()">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg-slate-50">
+  <div class="p-4" *ngIf="groupedCart.length > 0; else emptyCart">
+    <div *ngFor="let group of groupedCart" class="bg-white rounded-2xl shadow-sm border border-slate-100 mb-5 overflow-hidden">
+      
+      <!-- Store Header -->
+      <div class="px-4 py-3 border-b border-slate-100 flex items-center gap-2 bg-slate-50/50">
+        <ion-icon name="storefront" class="text-blue-600 text-lg"></ion-icon>
+        <span class="font-bold text-sm text-slate-800">{{ group.seller_name }}</span>
+      </div>
+
+      <!-- Items List -->
+      <div class="px-4 py-3" *ngFor="let item of group.items; let last = last" [class.border-b]="!last" class="border-slate-100">
+        <div class="flex gap-3">
+          <img [src]="getImage(item.product_image)" class="w-20 h-20 object-cover rounded-xl border border-slate-100 bg-slate-100" />
+          <div class="flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-1">{{ item.product_name }}</h3>
+              <p class="text-blue-600 font-bold text-sm">Rp {{ item.unit_price | number }}</p>
+            </div>
+            
+            <div class="flex items-center justify-between mt-2">
+              <!-- Qty Controller -->
+              <div class="flex items-center bg-slate-100 rounded-lg p-0.5">
+                <button (click)="decreaseQty(item)" class="w-7 h-7 flex items-center justify-center bg-white rounded-md shadow-sm text-slate-600" [disabled]="item.quantity <= 1">
+                  <ion-icon name="remove"></ion-icon>
+                </button>
+                <span class="w-8 text-center text-xs font-bold text-slate-700">{{ item.quantity }}</span>
+                <button (click)="increaseQty(item)" class="w-7 h-7 flex items-center justify-center bg-white rounded-md shadow-sm text-slate-600" [disabled]="item.quantity >= item.stock">
+                  <ion-icon name="add"></ion-icon>
+                </button>
+              </div>
+
+              <!-- Delete button -->
+              <button (click)="removeItem(item)" class="text-slate-400 hover:text-red-500">
+                <ion-icon name="trash-outline" class="text-xl"></ion-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Store Footer (Checkout per Store) -->
+      <div class="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+        <div>
+          <p class="text-xs text-slate-500">Total Pesanan</p>
+          <p class="font-bold text-slate-800 text-sm">Rp {{ group.total_price | number }}</p>
+        </div>
+        <button (click)="checkoutSeller(group)" class="bg-blue-600 text-white font-bold text-xs px-5 py-2 rounded-xl shadow-md shadow-blue-600/30">
+          Checkout Toko
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <ng-template #emptyCart>
+    <div class="flex flex-col items-center justify-center h-full px-6 text-center">
+      <div class="w-32 h-32 bg-blue-50 rounded-full flex items-center justify-center mb-6">
+        <ion-icon name="cart" class="text-6xl text-blue-300"></ion-icon>
+      </div>
+      <h2 class="text-xl font-bold text-slate-800 mb-2">Keranjang Kosong</h2>
+      <p class="text-slate-500 text-sm mb-8">Yuk, cari barang menarik dari live stream favoritmu sekarang!</p>
+      <ion-button routerLink="/home" expand="block" shape="round" color="primary" class="font-bold w-full max-w-xs shadow-xl shadow-blue-500/30">
+        Mulai Belanja
+      </ion-button>
+    </div>
+  </ng-template>
+</ion-content>

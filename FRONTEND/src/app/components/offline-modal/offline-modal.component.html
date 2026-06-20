@@ -1,0 +1,51 @@
+<ion-content class="offline-modal-content">
+  <div class="offline-modal-wrapper">
+
+    <!-- Animated icon area -->
+    <div class="offline-icon-container">
+      <div class="offline-icon-ring offline-icon-ring--outer"></div>
+      <div class="offline-icon-ring offline-icon-ring--inner"></div>
+      <div class="offline-icon-circle">
+        <ion-icon name="wifi-outline" class="offline-wifi-icon"></ion-icon>
+        <!-- Strike-through line over wifi icon -->
+        <div class="offline-strike"></div>
+      </div>
+    </div>
+
+    <!-- Text content -->
+    <div class="offline-text-area">
+      <h2 class="offline-title">Koneksi Terputus</h2>
+      <p class="offline-subtitle">
+        Oops! Sepertinya koneksi internet Anda sedang tidak tersedia.
+        Pastikan WiFi atau data seluler Anda aktif.
+      </p>
+    </div>
+
+    <!-- Status pills -->
+    <div class="offline-status-pills">
+      <div class="status-pill status-pill--wifi">
+        <ion-icon name="wifi-outline"></ion-icon>
+        <span>WiFi: Tidak aktif</span>
+      </div>
+      <div class="status-pill status-pill--signal">
+        <ion-icon name="cellular-outline"></ion-icon>
+        <span>Data: Tidak aktif</span>
+      </div>
+    </div>
+
+    <!-- Retry button -->
+    <ion-button
+      id="btn-retry-connection"
+      expand="block"
+      class="offline-retry-btn"
+      (click)="retryConnection()">
+      <ion-icon slot="start" name="refresh-outline"></ion-icon>
+      Coba Lagi
+    </ion-button>
+
+    <!-- Tips -->
+    <p class="offline-tip">
+      💡 Tip: Coba aktifkan mode pesawat lalu matikan kembali untuk menyegarkan koneksi.
+    </p>
+  </div>
+</ion-content>

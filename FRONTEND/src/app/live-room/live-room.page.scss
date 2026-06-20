@@ -1,0 +1,434 @@
+.live-content {
+  --background: #000;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  
+  .video-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .waiting-host-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+
+    ion-spinner {
+      transform: scale(1.5);
+      margin-bottom: 15px;
+    }
+
+    .waiting-text {
+      color: white;
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+.top-overlay {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 100%;
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+
+  .seller-info {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 86, 179, 0.7); /* Translucent Blue */
+    padding: 4px 12px 4px 4px;
+    border-radius: 30px;
+
+    ion-avatar {
+      width: 36px;
+      height: 36px;
+      border: 2px solid white;
+    }
+
+    .info-text {
+      margin-left: 8px;
+      display: flex;
+      flex-direction: column;
+
+      .name {
+        color: white;
+        font-size: 13px;
+        font-weight: bold;
+      }
+
+      .viewer {
+        color: #e0e0e0;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+
+        ion-icon {
+          margin-right: 4px;
+        }
+      }
+    }
+
+    .follow-btn {
+      margin-left: 10px;
+      --border-radius: 15px;
+      font-weight: bold;
+      text-transform: none;
+      height: 24px;
+    }
+  }
+
+  .close-btn {
+    --padding-start: 0;
+    --padding-end: 0;
+    font-size: 24px;
+  }
+}
+
+.bottom-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  z-index: 10;
+
+  .scrollable-chat {
+    max-height: 250px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-right: 10px; /* space for scrollbar */
+    pointer-events: auto; /* allow scrolling */
+
+    /* Custom scrollbar for chat */
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+    }
+
+    .chat-message {
+      margin-bottom: 8px;
+      align-self: flex-start;
+      max-width: 85%;
+      font-size: 14px;
+      
+      .chat-bubble {
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(5px);
+        padding: 6px 12px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        display: inline-block;
+
+        .sender {
+          font-weight: bold;
+          margin-right: 6px;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        .text {
+          color: white;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+      }
+    }
+  }
+
+  .action-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .chat-input-wrapper {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      padding-left: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+      ion-input {
+        --padding-start: 0;
+      }
+    }
+
+    .product-btn {
+      --background: #0056b3;
+      --border-radius: 50%;
+      --padding-start: 0;
+      --padding-end: 0;
+      width: 48px;
+      height: 48px;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0,86,179,0.4);
+
+      ion-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        border: 2px solid white;
+      }
+    }
+  }
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Pinned Product Overlay (Premium) */
+.pinned-products-wrapper {
+  position: absolute;
+  top: 90px;
+  left: 15px;
+  right: 15px;
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+  scroll-behavior: smooth;
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+  }
+
+  .pinned-product-overlay {
+    position: relative;
+    width: 280px;
+    min-width: 280px;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    animation: slideUpFade 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+  .pinned-product-content {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .pinned-image {
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-right: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      
+      &.placeholder-image {
+        background: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        ion-icon {
+          font-size: 24px;
+          color: #999;
+        }
+      }
+    }
+
+    .pinned-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .pinned-badge {
+        font-size: 10px;
+        text-transform: uppercase;
+        background: rgba(235, 68, 90, 0.1);
+        color: var(--ion-color-danger, #eb445a);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: bold;
+        align-self: flex-start;
+        margin-bottom: 4px;
+      }
+
+      .pinned-title {
+        font-size: 14px;
+        font-weight: bold;
+        color: #222;
+        margin: 0 0 2px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
+      }
+
+      .pinned-price {
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--ion-color-danger, #eb445a);
+        margin: 0;
+      }
+    }
+  }
+
+  .pinned-actions {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    
+    ion-button {
+      margin: 0;
+      font-weight: bold;
+      --border-radius: 8px;
+    }
+  }
+  }
+}
+
+/* Like Counter & Flying Hearts */
+.like-container {
+  position: absolute;
+  bottom: 120px;
+  right: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+
+  .heart-icon-wrapper {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+    ion-icon {
+      font-size: 28px;
+      filter: drop-shadow(0 2px 4px rgba(235, 68, 90, 0.4));
+    }
+  }
+
+  .like-count {
+    background: var(--ion-color-danger, #eb445a);
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+}
+
+.floating-heart {
+  position: fixed; /* Fixed to viewport coordinates from JS event */
+  pointer-events: none;
+  z-index: 20;
+  font-size: 40px;
+  animation: floatUp 1.5s ease-in-out forwards;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.5);
+  }
+  20% {
+    transform: translateY(-20px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-150px) scale(1);
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal styles */
+.product-modal-content {
+  --background: #f0f4f8;
+
+  .product-item {
+    --background: #ffffff;
+    --border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0,86,179,0.05);
+
+    ion-thumbnail {
+      --border-radius: 8px;
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .price {
+      color: #0056b3;
+      font-weight: bold;
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+
+    .stock {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .buy-btn {
+      --background: #0056b3;
+      --border-radius: 8px;
+      font-weight: bold;
+    }
+  }
+}

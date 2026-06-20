@@ -1,0 +1,233 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profile" class="text-white"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="font-bold tracking-wide">Pengaturan Akun</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="settings-content">
+  <div class="settings-wrapper">
+
+    <!-- KATEGORI: INFORMASI PRIBADI -->
+    <div class="settings-section">
+      <p class="section-label">Informasi Pribadi</p>
+      <div class="settings-card">
+        <div class="settings-item" (click)="editAddress()">
+          <div class="item-icon blue">
+            <ion-icon name="location-outline"></ion-icon>
+          </div>
+          <div class="item-text">
+            <p class="item-title">Alamat Pengiriman</p>
+            <p class="item-subtitle">{{ address || 'Belum ada alamat' }}</p>
+          </div>
+          <ion-icon name="chevron-forward" class="item-chevron"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- KATEGORI: PREFERENSI APLIKASI -->
+    <div class="settings-section">
+      <p class="section-label">Preferensi Aplikasi</p>
+      <div class="settings-card">
+        <div class="settings-item">
+          <div class="item-icon purple">
+            <ion-icon name="notifications-outline"></ion-icon>
+          </div>
+          <div class="item-text">
+            <p class="item-title">Notifikasi Push</p>
+          </div>
+          <div class="toggle-wrap">
+            <input type="checkbox" id="toggleNotif" [(ngModel)]="isNotificationEnabled" (change)="toggleNotification()"
+                   class="toggle-checkbox" [class.on]="isNotificationEnabled" />
+            <label for="toggleNotif" class="toggle-label" [class.on]="isNotificationEnabled"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KATEGORI: KEAMANAN -->
+    <div class="settings-section">
+      <p class="section-label">Keamanan</p>
+      <div class="settings-card">
+        <div class="settings-item border-b" (click)="openChangePassword()">
+          <div class="item-icon green">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+          </div>
+          <div class="item-text">
+            <p class="item-title">Ubah Password</p>
+            <p class="item-subtitle">Perbarui kata sandi akunmu</p>
+          </div>
+          <ion-icon name="chevron-forward" class="item-chevron"></ion-icon>
+        </div>
+        <div class="settings-item" (click)="openPinModal()">
+          <div class="item-icon orange">
+            <ion-icon name="keypad-outline"></ion-icon>
+          </div>
+          <div class="item-text">
+            <p class="item-title">PIN Transaksi</p>
+            <p class="item-subtitle" [class.text-green]="hasTransactionPin" [class.text-red]="!hasTransactionPin">
+              {{ hasTransactionPin ? '✓ Sudah Diatur' : '⚠ Belum Diatur' }}
+            </p>
+          </div>
+          <span class="item-badge" [class.active]="hasTransactionPin">{{ hasTransactionPin ? 'Ubah' : 'Atur' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KATEGORI: BANTUAN -->
+    <div class="settings-section">
+      <p class="section-label">Bantuan</p>
+      <div class="settings-card">
+        <div class="settings-item" (click)="openHelp()">
+          <div class="item-icon teal">
+            <ion-icon name="help-circle-outline"></ion-icon>
+          </div>
+          <div class="item-text">
+            <p class="item-title">Pusat Bantuan</p>
+            <p class="item-subtitle">FAQ & Hubungi dukungan</p>
+          </div>
+          <ion-icon name="chevron-forward" class="item-chevron"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- MODAL UBAH PASSWORD — PREMIUM DESIGN   -->
+<!-- ═══════════════════════════════════════ -->
+<ion-modal [isOpen]="isPasswordModalOpen" (didDismiss)="closeChangePassword()" [breakpoints]="[0, 1]" [initialBreakpoint]="1">
+  <ng-template>
+    <div class="modal-container">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-icon-wrap">
+          <ion-icon name="lock-closed" class="modal-icon"></ion-icon>
+        </div>
+        <h2 class="modal-title">Ubah Password</h2>
+        <p class="modal-subtitle">Pastikan password baru kamu kuat dan mudah diingat</p>
+        <button class="modal-close-btn" (click)="closeChangePassword()">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <!-- Password Lama -->
+        <div class="form-group">
+          <label class="form-label">Password Lama</label>
+          <div class="input-wrapper">
+            <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+            <input [type]="showOldPass ? 'text' : 'password'" class="form-input"
+                   [(ngModel)]="passwordForm.oldPassword" placeholder="Masukkan password lama" />
+            <button type="button" class="eye-btn" (click)="showOldPass = !showOldPass">
+              <ion-icon [name]="showOldPass ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Password Baru -->
+        <div class="form-group">
+          <label class="form-label">Password Baru</label>
+          <div class="input-wrapper">
+            <ion-icon name="key-outline" class="input-icon"></ion-icon>
+            <input [type]="showNewPass ? 'text' : 'password'" class="form-input"
+                   [(ngModel)]="passwordForm.newPassword" placeholder="Minimal 6 karakter" />
+            <button type="button" class="eye-btn" (click)="showNewPass = !showNewPass">
+              <ion-icon [name]="showNewPass ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Konfirmasi Password Baru -->
+        <div class="form-group">
+          <label class="form-label">Konfirmasi Password Baru</label>
+          <div class="input-wrapper" [class.input-error]="passwordForm.newPassword && passwordForm.confirmPassword && passwordForm.newPassword !== passwordForm.confirmPassword">
+            <ion-icon name="checkmark-circle-outline" class="input-icon"></ion-icon>
+            <input [type]="showConfPass ? 'text' : 'password'" class="form-input"
+                   [(ngModel)]="passwordForm.confirmPassword" placeholder="Ulangi password baru" />
+            <button type="button" class="eye-btn" (click)="showConfPass = !showConfPass">
+              <ion-icon [name]="showConfPass ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </button>
+          </div>
+          <p *ngIf="passwordForm.newPassword && passwordForm.confirmPassword && passwordForm.newPassword !== passwordForm.confirmPassword"
+             class="error-hint">Password tidak cocok</p>
+        </div>
+
+        <button class="btn-primary" (click)="savePassword()"
+                [disabled]="!passwordForm.oldPassword || !passwordForm.newPassword || !passwordForm.confirmPassword || passwordForm.newPassword !== passwordForm.confirmPassword">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          Simpan Password Baru
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- MODAL SETUP PIN TRANSAKSI              -->
+<!-- ═══════════════════════════════════════ -->
+<ion-modal [isOpen]="isPinModalOpen" (didDismiss)="closePinModal()" [backdropDismiss]="false" [breakpoints]="[0, 1]" [initialBreakpoint]="1">
+  <ng-template>
+    <div class="modal-container">
+      <!-- Modal Header -->
+      <div class="modal-header pin-header">
+        <div class="modal-icon-wrap orange">
+          <ion-icon name="keypad" class="modal-icon"></ion-icon>
+        </div>
+        <h2 class="modal-title">{{ hasTransactionPin ? 'Ubah PIN Transaksi' : 'Atur PIN Transaksi' }}</h2>
+        <p class="modal-subtitle">Buat 6 digit PIN untuk keamanan pembayaran & penarikan saldo</p>
+        <button class="modal-close-btn" (click)="closePinModal()">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <!-- Password Akun -->
+        <div class="form-group">
+          <label class="form-label">Password Akun Saat Ini</label>
+          <div class="input-wrapper">
+            <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+            <input type="password" class="form-input"
+                   [(ngModel)]="pinForm.password" placeholder="Verifikasi identitasmu" />
+          </div>
+        </div>
+
+        <!-- PIN Baru -->
+        <div class="form-group">
+          <label class="form-label">PIN Baru (6 Digit)</label>
+          <div class="input-wrapper">
+            <ion-icon name="keypad-outline" class="input-icon"></ion-icon>
+            <input type="password" inputmode="numeric" maxlength="6" class="form-input pin-input"
+                   [(ngModel)]="pinForm.pin" placeholder="• • • • • •" />
+          </div>
+          <div class="pin-dots">
+            <span *ngFor="let i of [1,2,3,4,5,6]" class="pin-dot" [class.filled]="pinForm.pin && pinForm.pin.toString().length >= i"></span>
+          </div>
+        </div>
+
+        <!-- Konfirmasi PIN -->
+        <div class="form-group">
+          <label class="form-label">Konfirmasi PIN</label>
+          <div class="input-wrapper" [class.input-error]="pinForm.pin && pinForm.pinConfirmation && pinForm.pin.toString() !== pinForm.pinConfirmation.toString()">
+            <ion-icon name="checkmark-circle-outline" class="input-icon"></ion-icon>
+            <input type="password" inputmode="numeric" maxlength="6" class="form-input pin-input"
+                   [(ngModel)]="pinForm.pinConfirmation" placeholder="• • • • • •" />
+          </div>
+          <p *ngIf="pinForm.pin && pinForm.pinConfirmation && pinForm.pin.toString() !== pinForm.pinConfirmation.toString()"
+             class="error-hint">PIN tidak cocok</p>
+        </div>
+
+        <button class="btn-primary orange" (click)="saveTransactionPin()"
+                [disabled]="!pinForm.password || !pinForm.pin || !pinForm.pinConfirmation || pinForm.pin.toString().length !== 6">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          Simpan PIN
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>

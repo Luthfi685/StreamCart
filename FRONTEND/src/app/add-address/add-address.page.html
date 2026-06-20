@@ -1,0 +1,126 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="chevron-back" color="dark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="header-title">Tambahkan alamat baru</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="address-content ion-padding">
+  
+  <div class="form-group">
+    <ion-label class="field-label">Nama lengkap</ion-label>
+    <div class="custom-input-box">
+      <ion-input [(ngModel)]="fullName" placeholder="Masukkan nama lengkap"></ion-input>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <ion-label class="field-label">Nomor telepon</ion-label>
+    <div class="custom-input-box phone-input">
+      <div class="country-code">
+        {{phoneCode}} <ion-icon name="chevron-down"></ion-icon>
+      </div>
+      <div class="divider"></div>
+      <ion-input [(ngModel)]="phoneNumber" type="tel" placeholder="Masukkan nomor telepon yang valid"></ion-input>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <ion-label class="field-label">Alamat</ion-label>
+    <div class="custom-input-box address-select" (click)="openAddressModal()">
+      <span class="placeholder" [style.color]="selectedFullRegion ? '#111' : '#999'">
+        {{ selectedFullRegion || 'Pilih Provinsi, Kota, Kecamatan' }}
+      </span>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </div>
+  </div>
+
+  <div class="current-location-box">
+    <div class="location-header">Lokasi saat ini</div>
+    <div class="location-content">
+      <div class="map-icon">
+        <ion-icon name="location" color="light"></ion-icon>
+      </div>
+      <div class="location-text">
+        <div class="loc-title">{{locationName}}</div>
+        <div class="loc-desc">{{locationDesc}}</div>
+      </div>
+    </div>
+    <ion-button expand="block" color="light" class="use-location-btn" (click)="useCurrentLocation()">
+      <ion-spinner *ngIf="isLocating" name="crescent" color="primary"></ion-spinner>
+      <span *ngIf="!isLocating">Pakai lokasi saat ini</span>
+    </ion-button>
+  </div>
+
+  <div class="form-group">
+    <ion-label class="field-label">Detail alamat</ion-label>
+    <div class="custom-input-box">
+      <ion-input [(ngModel)]="addressDetail" placeholder="Masukkan detail lainnya (opsional)"></ion-input>
+    </div>
+  </div>
+
+  <div class="form-group toggle-group">
+    <ion-label class="field-label">Tetapkan sebagai default</ion-label>
+    <ion-toggle [(ngModel)]="isDefault" color="danger"></ion-toggle>
+  </div>
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <div class="footer-container">
+    <p class="privacy-note">
+      Dengan mengklik Simpan, Anda menyatakan bahwa Anda telah membaca <strong>Kebijakan Privasi Streamcart.</strong>
+    </p>
+    <ion-button expand="block" class="save-btn" [disabled]="!isFormValid" (click)="saveAddress()">
+      Simpan
+    </ion-button>
+  </div>
+</ion-footer>
+
+<!-- Modal for Region Selection -->
+<ion-modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen = false">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <ion-title style="font-size: 16px; font-weight: 700;">
+          Pilih {{ selectionStep === 'province' ? 'Provinsi' : (selectionStep === 'city' ? 'Kota/Kabupaten' : 'Kecamatan') }}
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeAddressModal()">
+            <ion-icon name="close" color="dark"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-toolbar *ngIf="selectionStep !== 'province'">
+        <ion-buttons slot="start">
+          <ion-button (click)="stepBack()">
+            <ion-icon name="arrow-back" color="dark"></ion-icon>
+            <span style="font-size: 14px; margin-left: 4px; text-transform: none; color: #333;">Kembali</span>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content class="ion-padding" [scrollY]="true">
+      <!-- Loading Skeleton -->
+      <div *ngIf="isLoadingRegions">
+        <ion-list lines="none">
+          <ion-item *ngFor="let i of [1,2,3,4,5]">
+            <ion-skeleton-text animated style="width: 100%; height: 24px; border-radius: 4px;"></ion-skeleton-text>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <!-- Real Data List -->
+      <ion-list *ngIf="!isLoadingRegions" lines="full" class="region-list">
+        <ion-item button *ngFor="let item of currentList" (click)="selectRegion(item)" detail="true" class="region-item">
+          <ion-label style="font-size: 15px; color: #333;">{{ item.name }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

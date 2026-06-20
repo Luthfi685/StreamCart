@@ -1,0 +1,36 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="bg-white">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" color="dark"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="font-bold text-gray-800">Notifikasi</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg-gray-50">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="isLoading" class="text-center mt-10">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p class="text-gray-500 mt-2 text-sm">Memuat notifikasi...</p>
+  </div>
+
+  <div *ngIf="!isLoading && notifications.length === 0" class="flex flex-col items-center justify-center mt-20 p-6 text-center">
+    <ion-icon name="notifications-off-outline" class="text-6xl text-gray-300"></ion-icon>
+    <h3 class="text-gray-800 font-bold mt-4">Belum Ada Notifikasi</h3>
+    <p class="text-gray-500 text-sm mt-2">Dapatkan info pesanan dan penawaran terbaru di sini.</p>
+  </div>
+
+  <ion-list *ngIf="!isLoading && notifications.length > 0" class="bg-transparent mt-2">
+    <ion-item *ngFor="let notif of notifications" class="mb-2 bg-white rounded-lg mx-3 shadow-sm border border-gray-100" [ngClass]="{'bg-blue-50': !notif.read_at}">
+      <ion-icon name="cube-outline" slot="start" class="text-blue-500 bg-blue-100 p-2 rounded-full"></ion-icon>
+      <ion-label class="ion-text-wrap py-2">
+        <h3 class="font-bold text-gray-800 text-sm mb-1">Status Pesanan</h3>
+        <p class="text-gray-600 text-xs leading-tight">{{ notif.data.message }}</p>
+        <span class="text-[10px] text-gray-400 mt-2 block">{{ notif.created_at | date:'dd MMM yyyy, HH:mm' }}</span>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

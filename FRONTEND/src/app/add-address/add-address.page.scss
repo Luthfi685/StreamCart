@@ -1,0 +1,189 @@
+.header-title {
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  margin-right: 48px; /* Offset back button */
+}
+
+.address-content {
+  --background: #fff;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 8px;
+}
+
+.custom-input-box {
+  background: #f4f4f4;
+  border-radius: 8px;
+  padding: 0 12px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+
+  ion-input {
+    --padding-start: 0;
+    font-size: 14px;
+  }
+}
+
+.phone-input {
+  display: flex;
+  
+  .country-code {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #111;
+    white-space: nowrap;
+    
+    ion-icon {
+      margin-left: 4px;
+      font-size: 12px;
+    }
+  }
+
+  .divider {
+    width: 1px;
+    height: 20px;
+    background: #ddd;
+    margin: 0 12px;
+  }
+}
+
+.address-select {
+  justify-content: space-between;
+  .placeholder {
+    color: #999;
+    font-size: 14px;
+  }
+  ion-icon {
+    color: #999;
+  }
+}
+
+.current-location-box {
+  background: #f8f8f8;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+
+  .location-header {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 12px;
+  }
+
+  .location-content {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .map-icon {
+      width: 36px;
+      height: 36px;
+      background: #0d9488;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      ion-icon {
+        font-size: 20px;
+      }
+    }
+
+    .location-text {
+      flex: 1;
+      .loc-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #111;
+        margin-bottom: 2px;
+      }
+      .loc-desc {
+        font-size: 12px;
+        color: #666;
+        line-height: 1.4;
+      }
+    }
+  }
+
+  .use-location-btn {
+    --background: #ebebeb;
+    --color: #111;
+    --box-shadow: none;
+    font-weight: 600;
+    margin: 0;
+    text-transform: none;
+  }
+}
+
+.toggle-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  
+  .field-label {
+    margin-bottom: 0;
+  }
+}
+
+.footer-container {
+  padding: 16px;
+  background: white;
+  border-top: 1px solid #f0f0f0;
+
+  .privacy-note {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    margin: 0 0 16px;
+    line-height: 1.4;
+
+    strong {
+      color: #111;
+    }
+  }
+
+  .save-btn {
+    --background: #f43f5e;
+    --background-activated: #e11d48;
+    --border-radius: 24px;
+    margin: 0;
+    font-weight: 600;
+    text-transform: none;
+    
+    &.button-disabled {
+      --background: #fda4af;
+      opacity: 1;
+    }
+  }
+}
+
+.region-list {
+  background: white;
+}
+
+.region-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+/* Fix: ensure ion-content inside modal can scroll */
+ion-modal {
+  ion-content {
+    --overflow: auto;
+    overflow-y: auto;
+  }
+}

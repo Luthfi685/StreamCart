@@ -1,0 +1,179 @@
+<header class="buyer-top-header">
+  <h1 class="header-logo">StreamCart</h1>
+  <div class="header-actions">
+    <button class="notif-btn" routerLink="/notifications">
+      <ion-icon name="notifications-outline"></ion-icon>
+      <div class="cart-badge bg-red-500" *ngIf="unreadNotifCount > 0">{{ unreadNotifCount }}</div>
+    </button>
+    <button class="cart-btn" routerLink="/cart">
+      <ion-icon name="cart-outline"></ion-icon>
+      <div class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</div>
+    </button>
+  </div>
+</header>
+
+<ion-content class="profile-content bg-gray-50">
+  <div class="pb-24 w-full">
+
+    <!-- 1. HERO BANNER -->
+    <div class="hero-section rounded-b-[2.5rem]" style="background: linear-gradient(to right, #2563eb, #3b82f6); min-height: 180px; width: 100%;">
+    </div>
+
+    <!-- 2. AVATAR & USER INFO (Overlapping) -->
+    <div class="flex flex-col -mt-16 relative z-10 px-4 max-w-2xl mx-auto w-full">
+      
+      <!-- Center Avatar and Text -->
+      <div class="flex flex-col items-center w-full">
+        <div class="avatar-wrapper relative" (click)="changeProfilePicture()">
+          <div class="w-24 h-24 rounded-full border-4 border-white shadow-md bg-gray-100 flex items-center justify-center overflow-hidden" style="width: 96px; height: 96px;">
+            <img *ngIf="user?.avatar && user?.avatar !== ''" [src]="getAvatarUrl(user.avatar)" alt="Avatar" class="w-full h-full object-cover" />
+            <ion-icon *ngIf="!user?.avatar || user?.avatar === ''" name="person" class="text-5xl text-gray-400 mt-2" style="font-size: 48px;"></ion-icon>
+          </div>
+          <div class="absolute bottom-0 right-0 bg-white p-1.5 rounded-full shadow-sm text-blue-600 flex items-center justify-center border border-gray-100">
+            <ion-icon name="camera" class="text-lg block"></ion-icon>
+          </div>
+        </div>
+        <h2 class="mt-3 font-bold text-gray-800 text-xl">{{ user?.name || 'Guest' }}</h2>
+        <span class="mt-1 px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full flex items-center gap-1 w-max mx-auto">
+          <ion-icon name="person"></ion-icon> {{ (user?.role || 'Buyer') | titlecase }}
+        </span>
+      </div>
+      
+      <!-- CTA BUKA TOKO (FLOATING BANNER) -->
+      <div *ngIf="user?.role === 'buyer'" (click)="redirectToWebRegistration()" 
+           class="bg-blue-50 rounded-xl p-3 flex items-center justify-between border border-blue-100 shadow-sm mt-6 mb-5 cursor-pointer w-full text-left">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+            <ion-icon name="storefront" class="text-xl"></ion-icon>
+          </div>
+          <div>
+            <p class="font-bold text-gray-800 text-sm">Buka Toko Gratis</p>
+            <p class="text-xs text-gray-500">Mulai jualan sekarang juga!</p>
+          </div>
+        </div>
+        <ion-icon name="chevron-forward" class="text-blue-500"></ion-icon>
+      </div>
+
+      <!-- CTA DASHBOARD SELLER -->
+      <div *ngIf="user?.role === 'seller'" (click)="openSellerDashboard()" 
+           class="bg-orange-50 rounded-xl p-3 flex items-center justify-between border border-orange-100 shadow-sm mt-6 mb-5 cursor-pointer w-full text-left">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
+            <ion-icon name="stats-chart" class="text-xl"></ion-icon>
+          </div>
+          <div>
+            <p class="font-bold text-gray-800 text-sm">Dashboard Seller</p>
+            <p class="text-xs text-gray-500">Kelola toko dan produkmu di web!</p>
+          </div>
+        </div>
+        <ion-icon name="open-outline" class="text-orange-500"></ion-icon>
+      </div>
+
+      <!-- 2. ORDER TRACKING GRID -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm mb-4 border border-gray-100">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-bold text-gray-800">Pesanan Saya</h3>
+          <span class="text-xs text-blue-600 font-semibold cursor-pointer" routerLink="/transactions">Lihat Riwayat &rsaquo;</span>
+        </div>
+        
+        <div class="grid grid-cols-4 gap-2 text-center">
+          <!-- Belum Bayar -->
+          <div class="tracking-item cursor-pointer" routerLink="/transactions">
+            <div class="relative inline-block mb-1">
+              <ion-icon name="wallet-outline" class="text-2xl text-gray-600"></ion-icon>
+              <div *ngIf="unpaidCount > 0" class="absolute -top-1 -right-2 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white">{{ unpaidCount }}</div>
+            </div>
+            <p class="text-[10px] text-gray-600 font-medium leading-tight">Belum<br>Bayar</p>
+          </div>
+          
+          <!-- Dikemas -->
+          <div class="tracking-item cursor-pointer" routerLink="/transactions">
+            <div class="relative inline-block mb-1">
+              <ion-icon name="cube-outline" class="text-2xl text-gray-600"></ion-icon>
+              <div *ngIf="packedCount > 0" class="absolute -top-1 -right-2 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white">{{ packedCount }}</div>
+            </div>
+            <p class="text-[10px] text-gray-600 font-medium leading-tight">Dikemas</p>
+          </div>
+          
+          <!-- Dikirim -->
+          <div class="tracking-item cursor-pointer" routerLink="/transactions">
+            <div class="relative inline-block mb-1">
+              <ion-icon name="car-outline" class="text-2xl text-gray-600"></ion-icon>
+              <div *ngIf="shippedCount > 0" class="absolute -top-1 -right-2 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white">{{ shippedCount }}</div>
+            </div>
+            <p class="text-[10px] text-gray-600 font-medium leading-tight">Dikirim</p>
+          </div>
+          
+          <!-- Selesai -->
+          <div class="tracking-item cursor-pointer" routerLink="/transactions">
+            <div class="relative inline-block mb-1">
+              <ion-icon name="checkmark-circle-outline" class="text-2xl text-gray-600"></ion-icon>
+            </div>
+            <p class="text-[10px] text-gray-600 font-medium leading-tight">Selesai</p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- 4. MENU PENGATURAN & AKUN -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        
+        <!-- Informasi Akun -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-50 active:bg-gray-50 transition cursor-pointer" routerLink="/settings">
+          <div class="flex items-center gap-3">
+            <ion-icon name="person-outline" class="text-gray-500 text-lg"></ion-icon>
+            <span class="text-sm font-medium text-gray-700">Informasi Akun</span>
+          </div>
+          <ion-icon name="chevron-forward" class="text-gray-400"></ion-icon>
+        </div>
+        
+        <!-- Daftar Alamat -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-50 active:bg-gray-50 transition cursor-pointer" routerLink="/add-address">
+          <div class="flex items-center gap-3">
+            <ion-icon name="location-outline" class="text-gray-500 text-lg"></ion-icon>
+            <span class="text-sm font-medium text-gray-700">Daftar Alamat</span>
+          </div>
+          <ion-icon name="chevron-forward" class="text-gray-400"></ion-icon>
+        </div>
+        
+        <!-- Pusat Bantuan -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-50 active:bg-gray-50 transition cursor-pointer" routerLink="/help-center">
+          <div class="flex items-center gap-3">
+            <ion-icon name="help-circle-outline" class="text-gray-500 text-lg"></ion-icon>
+            <span class="text-sm font-medium text-gray-700">Pusat Bantuan</span>
+          </div>
+          <ion-icon name="chevron-forward" class="text-gray-400"></ion-icon>
+        </div>
+        
+        <!-- Keluar Akun -->
+        <div class="flex items-center justify-between p-4 active:bg-red-50 transition cursor-pointer" (click)="logout()">
+          <div class="flex items-center gap-3 text-red-500">
+            <ion-icon name="log-out-outline" class="text-lg"></ion-icon>
+            <span class="text-sm font-bold">Keluar Akun</span>
+          </div>
+          <ion-icon name="chevron-forward" class="text-red-300"></ion-icon>
+        </div>
+        
+      </div>
+
+    </div>
+  </div>
+</ion-content>
+
+<!-- Bottom Nav -->
+<nav class="buyer-bottom-nav">
+  <a class="nav-item" href="/home">
+    <ion-icon name="home-outline"></ion-icon>
+    <span>Beranda</span>
+  </a>
+  <a class="nav-item" routerLink="/transactions">
+    <ion-icon name="document-text-outline"></ion-icon>
+    <span>Pesanan</span>
+  </a>
+  <a class="nav-item active" routerLink="/profile">
+    <div class="active-pill"><ion-icon name="person"></ion-icon></div>
+    <span>Profil</span>
+  </a>
+</nav>
+
+<!-- No more modal -->

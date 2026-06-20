@@ -1,0 +1,131 @@
+<ion-content>
+  <div class="bg-surface text-on-surface min-h-screen flex flex-col antialiased">
+    <main class="flex-grow flex flex-col md:flex-row relative overflow-hidden">
+      <!-- Hero Image Side (Visible on Desktop) -->
+      <div class="hidden md:block md:w-1/2 relative bg-primary overflow-hidden isolate shadow-[0_4px_12px_rgba(0,88,190,0.08)] z-10">
+        <!-- decorative elements -->
+        <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary opacity-80 mix-blend-overlay"></div>
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-surface-tint rounded-full blur-3xl opacity-30"></div>
+        <div class="absolute bottom-12 right-12 w-64 h-64 bg-secondary-fixed-dim rounded-full blur-3xl opacity-20"></div>
+        <!-- Image placeholder -->
+        <img alt="E-commerce shopping experience" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-50 transition-transform duration-1000 hover:scale-105" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop"/>
+        <div class="absolute inset-0 flex flex-col justify-center px-12 md:px-24 z-20">
+          <h1 class="font-headline-lg text-headline-lg text-on-primary mb-4 tracking-tight drop-shadow-md">
+            StreamCart
+          </h1>
+          <p class="font-body-lg text-body-lg text-primary-fixed leading-relaxed max-w-md drop-shadow-sm">
+            Bergabunglah dengan komunitas belanja live terbesar. Temukan produk terbaik sambil menonton kreator favorit Anda.
+          </p>
+        </div>
+      </div>
+      <!-- Form Side -->
+      <div class="w-full md:w-1/2 flex items-center justify-center p-6 sm:p-12 md:p-24 relative z-20 bg-surface">
+        <div class="w-full max-w-md space-y-8">
+          <!-- Mobile Header (Hidden on Desktop) -->
+          <div class="md:hidden text-center mb-8">
+            <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold tracking-tight mb-2">
+              StreamCart
+            </h1>
+          </div>
+          <div>
+            <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Buat Akun Baru</h2>
+            <p class="font-body-md text-body-md text-on-surface-variant">Bergabunglah untuk mulai belanja Live!</p>
+          </div>
+          <form (ngSubmit)="register()" class="space-y-6">
+            <!-- Input: Nama Lengkap -->
+            <div class="relative group">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors duration-300">
+                <span class="material-symbols-outlined text-[20px]" data-icon="person">person</span>
+              </div>
+              <input autocomplete="name" class="block w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg text-on-surface placeholder-on-surface-variant focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 font-body-md text-body-md shadow-sm" id="fullName" name="name" [(ngModel)]="name" placeholder="Nama Lengkap" required="" type="text"/>
+            </div>
+            <!-- Input: Alamat Email -->
+            <div class="relative group">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors duration-300">
+                <span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
+              </div>
+              <input autocomplete="email" class="block w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg text-on-surface placeholder-on-surface-variant focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 font-body-md text-body-md shadow-sm" id="emailAddress" name="email" [(ngModel)]="email" placeholder="Alamat Email" required="" type="email"/>
+            </div>
+            <!-- Input: Buat Password -->
+            <div class="relative group">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors duration-300">
+                <span class="material-symbols-outlined text-[20px]" data-icon="lock">lock</span>
+              </div>
+              <input autocomplete="new-password" class="block w-full pl-12 pr-12 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg text-on-surface placeholder-on-surface-variant focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 font-body-md text-body-md shadow-sm" id="password" name="password" [(ngModel)]="password" placeholder="Buat Password" required="" [type]="showPassword ? 'text' : 'password'"/>
+              <!-- Optional: Toggle Password Visibility -->
+              <div class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer text-outline hover:text-on-surface transition-colors" (click)="togglePassword()">
+                <span class="material-symbols-outlined text-[20px]">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
+              </div>
+            </div>
+
+            <!-- Checkbox: Setuju Kebijakan Privasi (WAJIB untuk Google Play Store) -->
+            <div class="flex items-start gap-3 py-1">
+              <input
+                type="checkbox"
+                id="agreePrivacy"
+                name="agreePrivacy"
+                [(ngModel)]="agreePrivacy"
+                required
+                class="mt-1 w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary/20 cursor-pointer flex-shrink-0"
+              />
+              <label for="agreePrivacy" class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed cursor-pointer">
+                Saya telah membaca dan menyetujui
+                <a routerLink="/privacy-policy" class="text-primary font-semibold hover:underline">Kebijakan Privasi</a>
+                StreamCart. Data saya akan digunakan sesuai kebijakan yang berlaku.
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+              <button
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-[0_4px_12px_rgba(0,88,190,0.08)] text-on-primary bg-gradient-to-r from-primary to-secondary font-label-lg text-label-lg font-bold uppercase tracking-wider hover:opacity-90 active:scale-98 transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                type="submit"
+                [disabled]="!agreePrivacy">
+                DAFTAR SEKARANG
+              </button>
+            </div>
+          </form>
+
+          <!-- Footer Link -->
+          <p class="mt-8 text-center font-body-sm text-body-sm text-on-surface-variant">
+            Sudah punya akun?
+            <a routerLink="/login" class="font-label-lg text-label-lg text-primary hover:text-primary-fixed-variant transition-colors duration-300 font-semibold" href="#">Masuk di sini</a>
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- OTP Modal -->
+  <ion-modal [isOpen]="isOtpModalOpen" (didDismiss)="isOtpModalOpen = false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Verifikasi Email</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="isOtpModalOpen = false">Batal</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div class="flex flex-col items-center justify-center h-full text-center space-y-6">
+          <span class="material-symbols-outlined text-[64px] text-primary">mark_email_read</span>
+          <h2 class="font-headline-md text-headline-md">Masukkan Kode OTP</h2>
+          <p class="font-body-md text-body-md text-on-surface-variant px-4">
+            Kami telah mengirimkan 6 digit kode OTP ke email <strong>{{ email }}</strong>.
+          </p>
+          
+          <input type="text" [(ngModel)]="otpCode" maxlength="6" class="text-center text-[24px] tracking-[10px] w-full max-w-[200px] py-3 bg-surface-container-lowest border border-outline-variant rounded-lg text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 font-bold" placeholder="------" />
+          
+          <button (click)="verifyOtp()" class="w-full max-w-[200px] flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-[0_4px_12px_rgba(0,88,190,0.08)] text-on-primary bg-gradient-to-r from-primary to-secondary font-label-lg text-label-lg font-bold tracking-wider hover:opacity-90 transition-all duration-500 mt-4">
+            VERIFIKASI
+          </button>
+          
+          <button (click)="resendOtp()" [disabled]="resendCountdown > 0" class="mt-2 text-primary font-body-sm text-body-sm disabled:text-outline hover:underline transition-all">
+            {{ resendCountdown > 0 ? 'Kirim ulang OTP dalam ' + resendCountdown + 's' : 'Kirim Ulang OTP' }}
+          </button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

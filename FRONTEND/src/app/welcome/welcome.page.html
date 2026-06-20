@@ -1,0 +1,186 @@
+<ion-content [fullscreen]="true" class="welcome-content">
+  <!-- Dynamic Background Gradient -->
+  <div class="welcome-bg">
+    <div class="welcome-bg-orb welcome-bg-orb-1"></div>
+    <div class="welcome-bg-orb welcome-bg-orb-2"></div>
+  </div>
+  <!-- ═══════════════════════════════════════════════════════════
+       SWIPER (Ionic 8 — Web Component API, pengganti IonSlides)
+       ═══════════════════════════════════════════════════════════ -->
+  <swiper-container
+    #swiper
+    [pagination]="true"
+    [allowTouchMove]="true"
+    (swiperslidechange)="onSlideChange($event)"
+    class="welcome-swiper">
+
+    <!-- ── SLIDE 1: Selamat Datang ──────────────────────────────── -->
+    <swiper-slide class="slide">
+      <div class="slide-content">
+        <!-- Illustration -->
+        <div class="slide-illustration slide-illustration--1">
+          <div class="illus-bg-circle illus-bg-circle--blue"></div>
+          <div class="illus-icon-stack">
+            <!-- Main app icon -->
+            <div class="illus-main-icon">
+              <ion-icon name="storefront-outline"></ion-icon>
+            </div>
+            <!-- Floating badges -->
+            <div class="illus-badge illus-badge--live">
+              <ion-icon name="radio-button-on-outline"></ion-icon>
+              <span>LIVE</span>
+            </div>
+            <div class="illus-badge illus-badge--users">
+              <ion-icon name="people-outline"></ion-icon>
+              <span>2.4k</span>
+            </div>
+            <div class="illus-badge illus-badge--star">
+              <ion-icon name="star"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="slide-text-area">
+          <div class="slide-chip">
+            <ion-icon name="flash-outline"></ion-icon>
+            <span>Platform Terbaru</span>
+          </div>
+          <h2 class="slide-title">Selamat Datang di <span class="text-gradient">StreamCart</span></h2>
+          <p class="slide-desc">
+            Platform Live Commerce modern yang menggabungkan pengalaman belanja online
+            dengan keseruan live streaming secara real-time.
+          </p>
+        </div>
+      </div>
+    </swiper-slide>
+
+    <!-- ── SLIDE 2: Interaksi Real-Time ─────────────────────────── -->
+    <swiper-slide class="slide">
+      <div class="slide-content">
+        <!-- Illustration -->
+        <div class="slide-illustration slide-illustration--2">
+          <div class="illus-bg-circle illus-bg-circle--blue"></div>
+          <div class="illus-icon-stack">
+            <div class="illus-main-icon">
+              <ion-icon name="chatbubbles-outline"></ion-icon>
+            </div>
+            <!-- Floating chat bubbles -->
+            <div class="illus-chat illus-chat--1">
+              <span>Bagus banget! 🔥</span>
+            </div>
+            <div class="illus-chat illus-chat--2">
+              <span>Mau dong! 🛍️</span>
+            </div>
+            <div class="illus-chat illus-chat--3">
+              <span>❤️ 1.2k</span>
+            </div>
+            <!-- Live pulse -->
+            <div class="illus-badge illus-badge--live">
+              <ion-icon name="radio-button-on-outline"></ion-icon>
+              <span>LIVE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="slide-text-area">
+          <div class="slide-chip">
+            <ion-icon name="wifi-outline"></ion-icon>
+            <span>Real-Time</span>
+          </div>
+          <h2 class="slide-title">Interaksi <span class="text-gradient">Real-Time</span></h2>
+          <p class="slide-desc">
+            Chat dan nonton live streaming penjual secara langsung. Tanya produk,
+            berikan reaksi, dan rasakan pengalaman belanja yang interaktif.
+          </p>
+        </div>
+      </div>
+    </swiper-slide>
+
+    <!-- ── SLIDE 3: Belanja Instan ───────────────────────────────── -->
+    <swiper-slide class="slide">
+      <div class="slide-content">
+        <!-- Illustration -->
+        <div class="slide-illustration slide-illustration--3">
+          <div class="illus-bg-circle illus-bg-circle--blue"></div>
+          <div class="illus-icon-stack">
+            <div class="illus-main-icon">
+              <ion-icon name="cart-outline"></ion-icon>
+            </div>
+            <!-- Product cards floating -->
+            <div class="illus-product-card illus-product-card--1">
+              <div class="product-card-img"></div>
+              <div class="product-card-info">
+                <div class="product-card-name">Sneakers</div>
+                <div class="product-card-price">Rp 299k</div>
+              </div>
+            </div>
+            <div class="illus-product-card illus-product-card--2">
+              <div class="product-card-img product-card-img--2"></div>
+              <div class="product-card-info">
+                <div class="product-card-name">T-Shirt</div>
+                <div class="product-card-price">Rp 149k</div>
+              </div>
+            </div>
+            <!-- Checkmark badge -->
+            <div class="illus-badge illus-badge--check">
+              <ion-icon name="checkmark-circle"></ion-icon>
+              <span>Terbeli!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="slide-text-area">
+          <div class="slide-chip">
+            <ion-icon name="bag-check-outline"></ion-icon>
+            <span>Belanja Mudah</span>
+          </div>
+          <h2 class="slide-title">Belanja <span class="text-gradient">Instan</span></h2>
+          <p class="slide-desc">
+            Beli produk impianmu langsung saat live berlangsung — cukup satu ketuk.
+            Aman, cepat, dan terpercaya dengan sistem escrow terintegrasi.
+          </p>
+
+          <!-- CTA button — hanya muncul di slide terakhir -->
+          <ion-button
+            id="btn-mulai-sekarang"
+            expand="block"
+            class="welcome-cta-btn"
+            (click)="goToLogin()">
+            <ion-icon slot="start" name="rocket-outline"></ion-icon>
+            Mulai Sekarang
+            <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+          </ion-button>
+
+          <p class="welcome-login-hint">
+            Sudah punya akun?
+            <a (click)="goToLogin()" class="welcome-login-link">Masuk</a>
+          </p>
+        </div>
+      </div>
+    </swiper-slide>
+
+  </swiper-container>
+
+  <!-- ── NAVIGATION BUTTONS (DESKTOP) ──────────────────────────── -->
+  <!-- Tombol navigasi kustom yang mengontrol Swiper (Berada DI LUAR swiper-container agar tidak ter-render sebagai slide baru) -->
+  <div class="swiper-navigation-custom hidden md:flex w-full px-8 absolute top-1/2 left-0 -translate-y-1/2 z-10 justify-between pointer-events-none">
+    <ion-button fill="clear" color="medium" class="pointer-events-auto bg-white/50 rounded-full hover:bg-white transition-colors" (click)="slidePrev()" [disabled]="isFirstSlide">
+      <ion-icon slot="icon-only" name="chevron-back-circle-outline" class="text-4xl"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" color="primary" class="pointer-events-auto bg-white/50 rounded-full hover:bg-white transition-colors" (click)="slideNext()" *ngIf="!isLastSlide">
+      <ion-icon slot="icon-only" name="chevron-forward-circle-outline" class="text-4xl"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Skip button — tersedia di slide 1 & 2 -->
+  <div class="welcome-skip-wrapper" *ngIf="!isLastSlide">
+    <ion-button fill="clear" class="welcome-skip-btn" (click)="goToLogin()">
+      Lewati
+      <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+</ion-content>

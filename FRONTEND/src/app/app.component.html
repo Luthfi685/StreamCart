@@ -1,0 +1,36 @@
+<ion-app>
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       SPLASH SCREEN OVERLAY
+       Tampil di atas segalanya selama 3 detik pertama saat app dibuka.
+       Dikontrol oleh flag `showSplash` di AppComponent.
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="splash-screen" *ngIf="showSplash" [@splashAnimation]>
+
+    <!-- Background decorative circles -->
+    <div class="splash-circle splash-circle--top-right"></div>
+    <div class="splash-circle splash-circle--bottom-left"></div>
+
+    <!-- Logo & brand area -->
+    <div class="splash-content">
+
+      <!-- App name -->
+      <h1 class="splash-title">StreamCart</h1>
+      <p class="splash-tagline">Live Commerce Platform</p>
+
+      <!-- Loading spinner -->
+      <div class="splash-spinner-wrapper">
+        <div class="splash-spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring spinner-ring--delay1"></div>
+          <div class="spinner-ring spinner-ring--delay2"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       MAIN APP ROUTER OUTLET
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <ion-router-outlet></ion-router-outlet>
+</ion-app>

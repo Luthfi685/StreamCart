@@ -1,0 +1,205 @@
+<!-- ═══ HEADER ═══ -->
+<header class="home-header">
+  <div class="header-left">
+    <div class="brand-wrap">
+      <span class="brand-dot"></span>
+      <h1 class="brand-name">StreamCart</h1>
+    </div>
+    <p class="greeting">Selamat datang </p>
+  </div>
+  <div class="header-right">
+    <button class="icon-btn" routerLink="/notifications">
+      <ion-icon name="notifications-outline"></ion-icon>
+      <span class="badge-dot" *ngIf="unreadNotifCount > 0">{{ unreadNotifCount }}</span>
+    </button>
+    <button class="icon-btn" (click)="goToCart()">
+      <ion-icon name="bag-outline"></ion-icon>
+      <span class="badge-dot" *ngIf="cartCount > 0">{{ cartCount }}</span>
+    </button>
+  </div>
+</header>
+
+<ion-content class="home-content">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="home-scroll">
+
+    <!-- ═══ HERO BANNER ═══ -->
+    <div class="hero-banner">
+      <div class="hero-text">
+        <div class="live-chip">
+          <span class="chip-dot"></span>
+          LIVE SEKARANG
+        </div>
+        <h2 class="hero-title">Belanja Langsung<br>dari Live Stream</h2>
+        <p class="hero-sub">Tonton siaran langsung dan beli produk favorit secara real-time</p>
+        <button class="hero-cta" (click)="scrollToLive()">
+          <ion-icon name="play-circle"></ion-icon>
+          Mulai Nonton
+        </button>
+      </div>
+      <div class="hero-art">
+        <div class="art-ring ring-1"></div>
+        <div class="art-ring ring-2"></div>
+        <div class="art-ring ring-3"></div>
+        <ion-icon name="videocam" class="art-icon"></ion-icon>
+      </div>
+    </div>
+
+    <!-- ═══ LIVE SESSIONS ═══ -->
+    <section id="live-section" style="margin-top: 16px;">
+      <div class="section-head">
+        <div class="section-left">
+          <h3 class="section-title">Sedang Tayang</h3>
+          <span class="live-pill">
+            <span class="live-dot"></span> LIVE
+          </span>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="isLoading" class="state-wrap">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+        <p class="state-text">Mencari siaran live...</p>
+      </div>
+
+      <!-- Empty -->
+      <div *ngIf="!isLoading && liveSessions.length === 0" class="empty-wrap">
+        <div class="empty-icon-circle">
+          <ion-icon name="videocam-off-outline"></ion-icon>
+        </div>
+        <h4>Belum Ada yang Live</h4>
+        <p>Coba kembali lagi nanti untuk melihat siaran dari seller favoritmu!</p>
+        <button class="reload-btn" (click)="fetchLiveSessions(true)">
+          <ion-icon name="refresh-outline"></ion-icon> Muat Ulang
+        </button>
+      </div>
+
+      <!-- Live Grid -->
+      <div class="live-grid" *ngIf="!isLoading && liveSessions.length > 0">
+        <div class="live-card" *ngFor="let session of liveSessions"
+             [routerLink]="['/live-room']"
+             [queryParams]="{ sessionId: session.id, isHost: 'false' }">
+
+          <div class="card-thumb">
+            <!-- Fallback -->
+            <div class="thumb-fallback">
+              <ion-icon name="videocam-outline"></ion-icon>
+            </div>
+            <!-- Image -->
+            <img [src]="session.image" alt="" class="thumb-img" onerror="this.style.opacity='0';" />
+            <!-- Overlay -->
+            <div class="thumb-overlay"></div>
+            <!-- Badges -->
+            <div class="thumb-badges">
+              <span class="badge-live">
+                <span class="live-dot-sm"></span> LIVE
+              </span>
+              <span class="badge-viewers">
+                <ion-icon name="eye-outline"></ion-icon> {{ session.viewerCount }}
+              </span>
+            </div>
+            <!-- Bottom Info -->
+            <div class="card-bottom">
+              <h4 class="card-title">{{ session.title }}</h4>
+              <div class="card-seller">
+                <img [src]="session.sellerAvatar" alt="" class="seller-ava" onerror="this.src='assets/default-avatar.png'" />
+                <span class="seller-nm">{{ session.sellerName }}</span>
+                <ion-icon name="checkmark-circle" class="verified"></ion-icon>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ MUNGKIN ANDA SUKA ═══ -->
+    <section style="margin-top: 28px;">
+      <div class="section-head">
+        <div class="section-left">
+          <h3 class="section-title">✨ Mungkin Anda Suka</h3>
+        </div>
+      </div>
+
+      <!-- Recommendations Loading -->
+      <div *ngIf="isLoadingRecommendations" class="state-wrap" style="padding: 20px 0;">
+        <ion-spinner name="dots" color="primary"></ion-spinner>
+        <p class="state-text">Memilah rekomendasi untuk kamu...</p>
+      </div>
+
+      <!-- Recommendations Horizontal Scroll -->
+      <div class="rec-scroll" *ngIf="!isLoadingRecommendations && recommendedProducts.length > 0">
+        <div class="rec-card" *ngFor="let prod of recommendedProducts"
+             [routerLink]="['/product-detail', prod.id]">
+          <div class="rec-img-wrap">
+            <img [src]="getProductImage(prod)" alt="{{ prod.name }}" class="rec-img"
+                 onerror="this.style.opacity='0'" />
+          </div>
+          <div class="rec-info">
+            <p class="rec-name">{{ prod.name }}</p>
+            <p class="rec-price">Rp {{ prod.price | number }}</p>
+            <div class="rec-seller">
+              <ion-icon name="storefront-outline"></ion-icon>
+              <span>{{ prod.seller?.store_name || prod.seller?.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ JADWAL LIVE MENDATANG ═══ -->
+    <section style="margin-top: 32px;">
+      <div class="section-head">
+        <div class="section-left">
+          <h3 class="section-title">Jadwal Mendatang</h3>
+          <ion-icon name="calendar-outline" class="section-icon"></ion-icon>
+        </div>
+      </div>
+
+      <!-- Scheduled Empty -->
+      <div *ngIf="!isLoading && scheduledSessions.length === 0" class="sched-empty">
+        <ion-icon name="calendar-clear-outline"></ion-icon>
+        <p>Belum ada jadwal live dari seller favoritmu.</p>
+      </div>
+
+      <!-- Scheduled List -->
+      <div class="sched-list" *ngIf="!isLoading && scheduledSessions.length > 0">
+        <div class="sched-card" *ngFor="let session of scheduledSessions">
+          <img [src]="session.sellerAvatar" alt="" class="sched-ava" onerror="this.src='assets/default-avatar.png'" />
+          <div class="sched-info">
+            <p class="sched-seller">{{ session.sellerName }}</p>
+            <p class="sched-title">{{ session.title }}</p>
+            <div class="sched-time">
+              <ion-icon name="time-outline"></ion-icon>
+              <span>{{ session.scheduledAt | date:'EEE, dd MMM • HH:mm' }}</span>
+            </div>
+          </div>
+          <div class="sched-remind">
+            <ion-icon name="notifications-outline"></ion-icon>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div style="height: 100px;"></div>
+  </div>
+</ion-content>
+
+<!-- ═══ BOTTOM NAV ═══ -->
+<nav class="buyer-bottom-nav">
+  <a class="nav-item active" routerLink="/home">
+    <div class="active-pill"><ion-icon name="home"></ion-icon></div>
+    <span>Beranda</span>
+  </a>
+  <a class="nav-item" routerLink="/transactions">
+    <ion-icon name="document-text-outline"></ion-icon>
+    <span>Pesanan</span>
+  </a>
+  <a class="nav-item" routerLink="/profile">
+    <ion-icon name="person-outline"></ion-icon>
+    <span>Profil</span>
+  </a>
+</nav>

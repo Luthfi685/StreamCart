@@ -1,0 +1,17 @@
+/* ── Help Center Page Styles ── */
+
+ion-content {
+  --padding-bottom: 32px;
+}
+
+/* Pastikan konten tidak kepotong di bawah */
+.max-w-xl {
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+
+/* Fix untuk tombol Kirim Tiket agar tidak ketutupan navigation bar */
+button[disabled],
+button:not([disabled]) {
+  position: relative;
+  z-index: 1;
+}

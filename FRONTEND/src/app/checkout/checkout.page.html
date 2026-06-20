@@ -1,0 +1,108 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Checkout</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="checkout-content color-bg">
+  <div class="content-wrapper">
+    <div class="section-title">Alamat Pengiriman</div>
+    <ion-card class="custom-card address-card" routerLink="/add-address" style="position: relative;">
+      <ion-card-content>
+        <div class="address-header">
+          <ion-icon name="location" color="danger"></ion-icon>
+          <span class="label">Alamat Utama</span>
+        </div>
+        <div class="address-details" style="padding-right: 24px;">
+          <strong>{{ buyerName }}</strong> | {{ buyerPhone || 'Belum ada nomor HP' }}<br>
+          <span *ngIf="shippingAddress">{{ shippingAddress }}</span>
+          <span *ngIf="!shippingAddress" style="color: #ef4444; font-size: 12px; font-style: italic;">
+            ⚠️ Alamat pengiriman belum diatur! Silakan tap untuk melengkapi.
+          </span>
+        </div>
+        <ion-icon name="chevron-forward" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #999; font-size: 20px;"></ion-icon>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="section-title">Pesanan Anda</div>
+    <ion-card class="custom-card product-card" *ngFor="let item of items">
+      <ion-item lines="none" class="product-item">
+        <ion-thumbnail slot="start">
+          <img [src]="getImage(item.product_image)" onerror="this.onerror=null;this.src='https://via.placeholder.com/150';" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2 class="product-name">{{ item.product_name }}</h2>
+          <p class="product-price">Rp {{ item.unit_price | number }}</p>
+          <div class="quantity-control">
+            <ion-button fill="clear" size="small" class="qty-btn" (click)="decreaseQuantity(item)">
+              <ion-icon name="remove-circle-outline"></ion-icon>
+            </ion-button>
+            <span class="qty-number">{{ item.quantity }}</span>
+            <ion-button fill="clear" size="small" class="qty-btn" (click)="increaseQuantity(item)">
+              <ion-icon name="add-circle-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+
+    <div class="section-title">Transfer ke Rekening Admin StreamCart</div>
+    <ion-card class="custom-card payment-card">
+      <ion-card-content>
+        <div style="background: linear-gradient(135deg,#667eea22,#764ba222); border:1px solid #667eea44; padding: 16px; border-radius: 12px; margin-bottom: 16px;">
+          <p style="margin:0 0 4px; font-size:12px; color:#667eea; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Rekening Tujuan Transfer</p>
+          <h3 style="margin: 4px 0; color: #333; font-weight: 800; font-size: 18px;">{{ adminBankName }}</h3>
+          <p style="margin: 4px 0; font-size: 22px; font-weight: 800; letter-spacing: 2px; color: #222;">{{ adminBankAccount }}</p>
+          <p style="margin: 0; color: #666; font-size: 13px;">a.n. <strong>{{ adminBankAccountName }}</strong></p>
+        </div>
+
+        <div style="background:#fff8e1; border-left:3px solid #f59e0b; padding:10px 12px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#92400e;">
+          ⚠️ Transfer tepat sesuai jumlah <strong>Rp {{ total | number }}</strong> lalu upload bukti di bawah.
+        </div>
+
+        <p style="margin-bottom: 8px; font-weight: 600; font-size:14px;">📎 Upload Bukti Transfer:</p>
+        <input type="file" accept="image/*,application/pdf" (change)="onFileSelected($event)"
+               style="width:100%; padding:10px; border:2px dashed #667eea66; border-radius:10px; background:#f8f9ff; font-size:13px; box-sizing:border-box;" />
+        <p *ngIf="paymentProofUrl" style="color:#059669; font-size:13px; margin-top:8px; display:flex; align-items:center; gap:4px;">
+          <ion-icon name="checkmark-circle"></ion-icon> Foto berhasil dipilih ✅
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="section-title">Ringkasan Belanja</div>
+    <ion-card class="custom-card summary-card">
+      <ion-card-content>
+        <div class="summary-row">
+          <span class="summary-label">Total Harga Barang</span>
+          <span class="summary-value">Rp {{ (total - shippingFee) | number }}</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Ongkos Kirim</span>
+          <span class="summary-value">Rp {{ shippingFee | number }}</span>
+        </div>
+        <div class="divider"></div>
+        <div class="summary-row total-row">
+          <span class="summary-label">Total Belanja</span>
+          <span class="summary-value highlight">Rp {{ total | number }}</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="footer-toolbar">
+    <div class="footer-content">
+      <div class="total-section">
+        <span class="total-label">Total Pembayaran</span>
+        <span class="total-price">Rp {{ total | number }}</span>
+      </div>
+      <ion-button class="checkout-btn" expand="block" color="danger" (click)="processPayment()">
+        KIRIM BUKTI & BAYAR
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,184 @@
+// ─── Offline Modal Styles ─────────────────────────────────────────────────────
+
+:host {
+  --background: transparent;
+}
+
+.offline-modal-content {
+  --background: rgba(255, 255, 255, 0.97);
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+.offline-modal-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 40px 28px;
+  text-align: center;
+  gap: 20px;
+}
+
+// ── Animated icon ─────────────────────────────────────────────────────────────
+.offline-icon-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.offline-icon-ring {
+  position: absolute;
+  border-radius: 50%;
+  animation: ringPulse 2s ease-in-out infinite;
+
+  &--outer {
+    width: 120px;
+    height: 120px;
+    background: rgba(229, 56, 59, 0.08);
+    animation-delay: 0s;
+  }
+
+  &--inner {
+    width: 92px;
+    height: 92px;
+    background: rgba(229, 56, 59, 0.12);
+    animation-delay: 0.4s;
+  }
+}
+
+.offline-icon-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E5383B 0%, #ff6b6b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(229, 56, 59, 0.35);
+  z-index: 1;
+}
+
+.offline-wifi-icon {
+  font-size: 34px;
+  color: white;
+}
+
+// Diagonal strike-through line over wifi icon
+.offline-strike {
+  position: absolute;
+  width: 58px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+  transform: rotate(-45deg);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+// ── Text ──────────────────────────────────────────────────────────────────────
+.offline-text-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.offline-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1A1A2E;
+  margin: 0;
+}
+
+.offline-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #6B7C93;
+  line-height: 1.6;
+  margin: 0;
+}
+
+// ── Status pills ──────────────────────────────────────────────────────────────
+.offline-status-pills {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+
+  ion-icon {
+    font-size: 14px;
+  }
+
+  &--wifi,
+  &--signal {
+    background: rgba(229, 56, 59, 0.10);
+    color: #E5383B;
+    border: 1px solid rgba(229, 56, 59, 0.20);
+  }
+}
+
+// ── Retry button ──────────────────────────────────────────────────────────────
+.offline-retry-btn {
+  --background: #0052CC;
+  --background-hover: #0048b3;
+  --background-activated: #003d99;
+  --border-radius: 14px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --box-shadow: 0 8px 24px rgba(0, 82, 204, 0.30);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 8px;
+  letter-spacing: 0.3px;
+}
+
+// Shake animation for retry failure feedback
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-8px); }
+  40%       { transform: translateX(8px); }
+  60%       { transform: translateX(-6px); }
+  80%       { transform: translateX(6px); }
+}
+
+.shake {
+  animation: shake 0.6s ease;
+}
+
+// ── Tip text ──────────────────────────────────────────────────────────────────
+.offline-tip {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #6B7C93;
+  background: #F4F7FF;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+// ── Animations ────────────────────────────────────────────────────────────────
+@keyframes ringPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%       { transform: scale(1.08); opacity: 1; }
+}

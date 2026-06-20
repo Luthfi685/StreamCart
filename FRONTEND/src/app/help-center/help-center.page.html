@@ -1,0 +1,113 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/settings" class="text-white"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="font-bold tracking-wide">Pusat Bantuan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg-gray-50" [fullscreen]="false">
+  <div class="max-w-xl mx-auto py-6 px-4">
+    <!-- WhatsApp Opsi -->
+    <div class="bg-white rounded-xl shadow-sm p-6 text-center border border-gray-100 mb-6">
+      <div class="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-4">
+        <ion-icon name="logo-whatsapp" class="text-3xl text-green-500"></ion-icon>
+      </div>
+      <h2 class="text-lg font-bold text-gray-800 mb-2">Chat Customer Service</h2>
+      <p class="text-sm text-gray-500 mb-5">Butuh bantuan cepat? Tim dukungan kami siap melayani keluhan Anda via WhatsApp.</p>
+      <button (click)="openWhatsApp()" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition shadow-md flex justify-center items-center gap-2">
+        <ion-icon name="chatbubbles-outline"></ion-icon> Hubungi via WhatsApp
+      </button>
+    </div>
+
+    <!-- Form Tiket -->
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+      <h2 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3">Buat Tiket Dukungan</h2>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Kategori Kendala</label>
+          <select [(ngModel)]="ticket.issue_category" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 py-2 px-3 border bg-white">
+            <option value="" disabled selected>Pilih kategori...</option>
+            <option value="Akun & Keamanan">Akun & Keamanan</option>
+            <option value="Transaksi & Pembayaran">Transaksi & Pembayaran</option>
+            <option value="Pengiriman">Pengiriman</option>
+            <option value="Live Streaming">Live Streaming</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Judul Masalah</label>
+          <input type="text" [(ngModel)]="ticket.issue_title" placeholder="Contoh: Saldo belum masuk" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 py-2 px-3 border">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Lengkap</label>
+          <textarea [(ngModel)]="ticket.description" rows="4" placeholder="Jelaskan detail kendala yang Anda alami..." class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 py-2 px-3 border"></textarea>
+        </div>
+
+        <button (click)="submitTicket()" [disabled]="isSubmitting" class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition shadow-md flex justify-center items-center">
+          <ion-spinner *ngIf="isSubmitting" name="crescent" class="w-5 h-5 mr-2 text-white"></ion-spinner>
+          {{ isSubmitting ? 'Mengirim...' : 'Kirim Tiket' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Riwayat Tiket -->
+    <div class="mt-8">
+      <h2 class="text-lg font-bold text-gray-800 mb-4 px-1">Riwayat Tiket Saya</h2>
+      
+      <div *ngIf="isLoadingTickets" class="text-center py-6">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+      </div>
+      
+      <div *ngIf="!isLoadingTickets && tickets.length === 0" class="bg-white rounded-xl shadow-sm p-6 text-center border border-gray-100">
+        <ion-icon name="document-text-outline" class="text-4xl text-gray-300 mb-2"></ion-icon>
+        <p class="text-gray-500 text-sm">Belum ada tiket yang dibuat.</p>
+      </div>
+
+      <div *ngIf="!isLoadingTickets && tickets.length > 0" class="space-y-4">
+        <div *ngFor="let t of tickets" class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 relative overflow-hidden">
+          <!-- Indikator Status di pinggir -->
+          <div class="absolute left-0 top-0 bottom-0 w-1" 
+               [ngClass]="{'bg-red-500': t.status === 'open', 'bg-yellow-400': t.status === 'in_progress', 'bg-green-500': t.status === 'closed' || t.status === 'resolved'}">
+          </div>
+          
+          <div class="flex justify-between items-start mb-2 pl-2">
+            <div>
+              <span class="text-[10px] font-bold text-blue-600 uppercase tracking-wider">{{ t.issue_category }}</span>
+              <h3 class="font-bold text-gray-800 mt-0.5">{{ t.issue_title }}</h3>
+            </div>
+            <span class="text-[10px] font-semibold px-2 py-1 rounded-full whitespace-nowrap"
+                  [ngClass]="{
+                    'bg-red-50 text-red-600': t.status === 'open',
+                    'bg-yellow-50 text-yellow-600': t.status === 'in_progress',
+                    'bg-green-50 text-green-600': t.status === 'closed' || t.status === 'resolved'
+                  }">
+              {{ t.status === 'in_progress' ? 'DIPROSES' : t.status | uppercase }}
+            </span>
+          </div>
+          
+          <p class="text-sm text-gray-600 pl-2 mb-3 line-clamp-2">{{ t.description }}</p>
+          
+          <!-- Balasan Admin -->
+          <div *ngIf="t.admin_reply" class="ml-2 bg-blue-50 border-l-2 border-blue-500 pl-3 py-2 rounded-r-lg mb-2">
+            <div class="flex items-center gap-1.5 mb-1">
+              <ion-icon name="person-circle" class="text-blue-600"></ion-icon>
+              <span class="text-[10px] font-bold text-blue-700">Balasan Admin StreamCart</span>
+            </div>
+            <p class="text-xs text-blue-900 whitespace-pre-wrap">{{ t.admin_reply }}</p>
+          </div>
+          
+          <div class="pl-2 flex justify-between items-center text-[10px] text-gray-400 mt-2 border-t border-gray-50 pt-2">
+            <span>ID Tiket: #{{ t.id }}</span>
+            <span>{{ t.created_at | date:'dd MMM yyyy, HH:mm' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

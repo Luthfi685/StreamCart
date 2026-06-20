@@ -1,0 +1,81 @@
+.register-content {
+  --background: #f0f4f8; /* Very light blue/white background */
+}
+
+.register-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 10px;
+}
+
+.back-btn-container {
+  margin-bottom: 20px;
+}
+
+.logo-container {
+  text-align: left;
+  margin-bottom: 40px;
+  padding-left: 10px;
+
+  .app-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #0056b3;
+    margin: 10px 0 5px;
+  }
+
+  .app-subtitle {
+    color: #666;
+    margin: 0;
+    font-size: 16px;
+  }
+}
+
+.register-form {
+  margin-bottom: 30px;
+
+  .custom-input {
+    --background: #ffffff;
+    --border-radius: 12px;
+    --padding-start: 15px;
+    --color: #333333;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0, 86, 179, 0.1);
+
+    ion-input, ion-select {
+      --color: #333333;
+      width: 100%;
+    }
+
+    ion-icon {
+      margin-right: 10px;
+    }
+  }
+
+  .register-button {
+    --background: #0056b3;
+    --background-activated: #004494;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3);
+    font-weight: bold;
+    height: 50px;
+    margin-top: 20px;
+  }
+}
+
+.login-prompt {
+  text-align: center;
+  margin-top: 20px;
+  
+  p {
+    color: #666;
+    font-size: 15px;
+    
+    a {
+      color: #0056b3;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+.horizontal-scroller {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+}

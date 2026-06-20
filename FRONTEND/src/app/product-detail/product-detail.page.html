@@ -1,0 +1,139 @@
+<!-- Header -->
+<ion-header class="ion-no-border">
+  <ion-toolbar color="white">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()" color="dark">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="font-bold text-gray-800 text-base">Detail Produk</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToCart()" color="dark" class="relative">
+        <ion-icon name="cart-outline" class="text-xl"></ion-icon>
+        <div *ngIf="cartCount > 0" class="absolute top-1 right-1 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white">
+          {{ cartCount }}
+        </div>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg-gray-50">
+  
+  <!-- Skeleton Loading -->
+  <div *ngIf="isLoading" class="p-4">
+    <ion-skeleton-text animated style="width: 100%; height: 300px; border-radius: 12px;"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 70%; height: 24px; margin-top: 16px;"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 40%; height: 20px; margin-top: 8px;"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 100%; height: 100px; margin-top: 24px;"></ion-skeleton-text>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading && product" class="pb-24">
+    
+    <!-- Image Gallery -->
+    <div class="relative w-full h-72 bg-white border-b border-gray-100">
+      <div class="flex overflow-x-auto snap-x snap-mandatory h-full w-full hide-scrollbar" style="scroll-behavior: smooth;">
+        <div *ngFor="let img of getAllProductImages(product); let i = index" 
+             class="flex-none w-full h-full snap-center relative">
+          <img [src]="img" alt="Product Image {{i}}" class="w-full h-full object-cover">
+        </div>
+      </div>
+      <!-- Dots Indicator -->
+      <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10" *ngIf="getAllProductImages(product).length > 1">
+        <div *ngFor="let img of getAllProductImages(product); let i = index" 
+             class="w-1.5 h-1.5 rounded-full bg-black/30 backdrop-blur-sm border border-white/50">
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Utama -->
+    <div class="bg-white p-4 mb-2 shadow-sm border-b border-gray-100">
+      <div class="flex justify-between items-start mb-2">
+        <h1 class="text-lg font-bold text-gray-800 leading-tight flex-1 pr-4">{{ product.name }}</h1>
+      </div>
+      
+      <p class="text-2xl font-bold text-blue-600 mb-3">Rp {{ product.price | number }}</p>
+      
+      <div class="flex items-center gap-4 text-xs font-medium text-gray-500 mb-2">
+        <div class="flex items-center gap-1">
+          <ion-icon name="star" class="text-amber-400 text-base"></ion-icon>
+          <span class="text-gray-800 font-bold">{{ product.average_rating || '-' }}</span>
+          <span>({{ product.reviews?.length || 0 }} ulasan)</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <ion-icon name="cube-outline" class="text-base"></ion-icon>
+          <span>Sisa Stok: <span class="font-bold text-gray-800">{{ product.stock }}</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Toko -->
+    <div class="bg-white p-4 mb-2 shadow-sm border-y border-gray-100 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+          {{ (product.seller?.store_name || product.seller?.name || 'S')[0] | uppercase }}
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-gray-800">{{ product.seller?.store_name || product.seller?.name || 'Toko Seller' }}</h3>
+          <p class="text-xs text-gray-500 flex items-center gap-1">
+            <ion-icon name="checkmark-circle" class="text-blue-500"></ion-icon> Terverifikasi
+          </p>
+        </div>
+      </div>
+      <button class="text-blue-600 text-xs font-bold px-3 py-1.5 border border-blue-600 rounded-lg">Kunjungi</button>
+    </div>
+
+    <!-- Deskripsi -->
+    <div class="bg-white p-4 mb-2 shadow-sm border-y border-gray-100">
+      <h3 class="text-sm font-bold text-gray-800 mb-3">Deskripsi Produk</h3>
+      <div class="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+        {{ product.description || 'Tidak ada deskripsi.' }}
+      </div>
+    </div>
+
+    <!-- Ulasan (Reviews) Section -->
+    <div class="bg-white p-4 shadow-sm border-t border-gray-100 min-h-[200px]">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-sm font-bold text-gray-800">Ulasan Pembeli</h3>
+        <span class="text-xs text-blue-600 font-bold">Lihat Semua</span>
+      </div>
+
+      <div *ngIf="!product.reviews || product.reviews.length === 0" class="text-center py-6 text-gray-400">
+        <ion-icon name="chatbubbles-outline" class="text-4xl mb-2 text-gray-300"></ion-icon>
+        <p class="text-sm">Belum ada ulasan untuk produk ini.</p>
+      </div>
+
+      <div *ngIf="product.reviews && product.reviews.length > 0" class="flex flex-col gap-4">
+        <!-- Review Item -->
+        <div *ngFor="let review of product.reviews" class="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-6 h-6 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
+              <img *ngIf="review.user?.avatar" [src]="review.user.avatar" class="w-full h-full object-cover">
+              <ion-icon *ngIf="!review.user?.avatar" name="person" class="text-gray-400 text-xs"></ion-icon>
+            </div>
+            <span class="text-xs font-bold text-gray-700">{{ review.user?.name || review.user?.username || 'Pembeli' }}</span>
+            <span class="text-[10px] text-gray-400 ml-auto">{{ review.created_at | date:'dd MMM yyyy' }}</span>
+          </div>
+          
+          <div class="flex gap-0.5 mb-2 text-amber-400 text-xs">
+            <ion-icon *ngFor="let star of [1,2,3,4,5]" [name]="review.rating >= star ? 'star' : 'star-outline'"></ion-icon>
+          </div>
+          
+          <p class="text-xs text-gray-600 leading-snug">{{ review.comment || 'Tidak ada komentar.' }}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
+
+<!-- Bottom Bar (Fixed) -->
+<div *ngIf="!isLoading && product" class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 flex gap-3 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-50 pb-safe">
+  <button class="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-xl text-gray-700 active:bg-gray-50" (click)="addToCart()">
+    <ion-icon name="cart-outline" class="text-2xl"></ion-icon>
+  </button>
+  <button class="flex-1 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-2" (click)="buyNow()">
+    Beli Langsung
+  </button>
+</div>

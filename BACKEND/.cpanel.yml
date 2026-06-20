@@ -1,0 +1,8 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/goingpro/core
+    - export PUBLICPATH=/home/goingpro/public_html
+    - /bin/cp -R * $DEPLOYPATH/
+    - /bin/cp -R public/* $PUBLICPATH/
+    - /bin/cp public/.htaccess $PUBLICPATH/

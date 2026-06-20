@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ═══════════════════════════════════════════════════
+   TRANSACTION HISTORY — WHITE & BLUE THEME
+   ═══════════════════════════════════════════════════ */
+   
+:host {
+  font-family: 'Inter', sans-serif;
+  
+  --bg-color: #faf8ff;
+  --on-bg: #131b2e;
+  --surface: #ffffff;
+  --on-surface: #131b2e;
+  --on-surface-variant: #424754;
+  --surface-container-lowest: #ffffff;
+  --surface-container: #eaedff;
+  
+  --outline: #727785;
+  --outline-variant: #c2c6d6;
+  --primary: #0058be;
+  --on-primary: #ffffff;
+  --secondary: #4648d4;
+  --error: #ba1a1a;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
+}
+
+.transactions-content {
+  --background: var(--bg-color);
+  --padding-bottom: 120px;
+}
+
+/* ─────────────── SHARED (BUYER) STYLES ─────────────── */
+.ambient-backdrop {
+  position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden;
+  .glow { position: absolute; border-radius: 50%; }
+  .circle-1 { top: -20%; right: -10%; width: 50%; height: 50%; background: rgba(173, 198, 255, 0.2); filter: blur(120px); }
+  .circle-2 { top: 40%; left: -10%; width: 40%; height: 40%; background: rgba(192, 193, 255, 0.1); filter: blur(100px); }
+}
+
+.page-wrapper { max-width: 1024px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+.main-content { flex-grow: 1; padding: 24px 16px 128px; }
+.controls-section {
+  margin-bottom: 32px;
+  .page-title { font-size: 24px; font-weight: 700; color: var(--on-surface); margin: 0 0 16px 0; }
+  .controls-row { display: flex; flex-direction: column; gap: 16px; }
+  .search-box {
+    position: relative; width: 100%;
+    margin-bottom: 8px;
+    ion-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--outline); font-size: 22px; }
+    input {
+      width: 100%; padding: 14px 16px 14px 48px; background: var(--surface-container-lowest);
+      border: 1px solid rgba(114, 119, 133, 0.3); border-radius: 12px; font-size: 15px; outline: none; box-sizing: border-box;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      &:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0, 88, 190, 0.1); }
+    }
+  }
+  .filters-scroll {
+    display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 8px;
+    &::-webkit-scrollbar { display: none; }
+    .filter-chip {
+      white-space: nowrap; padding: 10px 20px; border-radius: 9999px; font-size: 13px; font-weight: 600;
+      background: var(--surface-container-lowest); border: 1px solid var(--outline-variant); color: var(--on-surface-variant); cursor: pointer;
+      transition: all 0.2s ease;
+      &.active { background: #e0f2fe; color: #0284c7; border-color: #7dd3fc; }
+      &:hover:not(.active) { background: #f8fafc; border-color: #cbd5e1; }
+    }
+  }
+}
+
+.group-title { font-size: 14px; font-weight: 700; color: var(--secondary); display: flex; align-items: center; gap: 8px; margin: 32px 0 16px; }
+.transactions-list-premium { display: flex; flex-direction: column; gap: 24px; }
+.order-card-premium {
+  background: var(--surface-container-lowest); border-radius: 12px; padding: 16px; border: 1px solid rgba(194, 198, 214, 0.4);
+  box-shadow: 0 1px 2px rgba(0, 88, 190, 0.05);
+  &.card-canceled { opacity: 0.8; }
+  .card-header-premium {
+    display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid rgba(194,198,214,0.2); padding-bottom: 8px;
+    .seller-info { 
+      display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--on-surface);
+      ion-icon { color: var(--outline); font-size: 16px; }
+    }
+    .status-badge {
+      padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px; text-transform: capitalize;
+      &.status-success { background: #d1fae5; color: #059669; } // Selesai (hijau)
+      &.status-payment-ok { background: #dbeafe; color: #2563eb; } // Pembayaran Dikonfirmasi (biru)
+      &.status-processing { background: #ede9fe; color: #7c3aed; } // Sedang Dikemas (ungu)
+      &.status-shipped { background: #fef9c3; color: #b45309; } // Sedang Dikirim (kuning/coklat)
+      &.status-canceled { background: var(--error-container); color: var(--on-error-container); } // Error (merah)
+      &.status-pending { background: var(--surface-container); color: var(--on-surface); } // Abu (pending)
+      &.status-warning { background: #fef3c7; color: #d97706; } // Warning (batal)
+    }
+  }
+  .card-body-premium {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 16px;
+    .product-thumbnail { width: 80px; height: 80px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: var(--surface-container); img { width: 100%; height: 100%; object-fit: cover; } }
+    .product-info {
+      flex-grow: 1;
+      .product-title { font-size: 16px; font-weight: 600; margin: 0 0 4px; display: -webkit-box; -webkit-line-clamp: 1; line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+      .product-meta { font-size: 14px; color: var(--outline); margin: 0 0 8px; }
+      .total-price-wrap {
+        display: flex; flex-direction: column;
+        .total-label { font-size: 11px; color: var(--outline); }
+        .total-amount { font-size: 16px; font-weight: 700; color: var(--primary); }
+      }
+    }
+  }
+  .card-footer-premium {
+    display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid rgba(194,198,214,0.2); justify-content: flex-end;
+  }
+}
+.btn-outline-blue { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; background: transparent; border: 1px solid rgba(0, 88, 190, 0.3); color: var(--primary); }
+.btn-solid-blue { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; background: var(--primary); color: #fff; border: none; }
+.empty-state-premium {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; text-align: center;
+  .icon-wrapper { font-size: 64px; color: var(--outline-variant); margin-bottom: 16px; background: #eaedff; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; border-radius: 50%; ion-icon { color: var(--primary); } }
+  h3 { font-size: 20px; font-weight: 700; margin: 0 0 8px; color: var(--on-surface); }
+  p { font-size: 14px; color: var(--on-surface-variant); margin: 0 0 24px; }
+}
+
+
+/* ==========================================
+   SELLER VIEW (TABLE LAYOUT)
+   ========================================== */
+.seller-table-view {
+  background: #f8f9fa;
+  min-height: 100vh;
+  padding-bottom: 100px; /* Space for bottom nav */
+}
+
+.seller-table-main {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .page-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 4px;
+  }
+  
+  .page-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 24px;
+  }
+
+  .search-container {
+    position: relative;
+    max-width: 450px;
+    margin-bottom: 24px;
+    
+    ion-icon {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      color: #999; font-size: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 16px 12px 46px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+
+      &:focus { border-color: #3b82f6; }
+    }
+  }
+
+  .table-scroll-wrapper {
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+
+    .data-table {
+      width: 100%;
+      min-width: 800px;
+      border-collapse: collapse;
+
+      th, td {
+        padding: 16px;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 13px;
+        color: #333;
+      }
+
+      th {
+        font-weight: 600;
+        color: #555;
+        background: #fafafa;
+        border-bottom: 2px solid #eaeaea;
+      }
+
+      tr:last-child td { border-bottom: none; }
+
+      .col-id { color: #666; font-weight: 500; }
+      .col-price { font-weight: 600; }
+
+      .status-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: capitalize;
+
+        &.status-pending, &.status-checking_admin { background: #fef3c7; color: #d97706; }
+        &.status-success { background: #dbeafe; color: #2563eb; }
+        &.status-processed { background: #ede9fe; color: #7c3aed; }
+        &.status-completed { background: #d1fae5; color: #059669; }
+        &.status-fail, &.status-cancelled { background: #fee2e2; color: #dc2626; }
+      }
+
+      .action-btn {
+        background: #eff6ff;
+        color: #2563eb;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover { background: #dbeafe; }
+        &:disabled { opacity: 0.5; cursor: not-allowed; }
+      }
+      
+      .no-action { color: #aaa; }
+      .empty-cell { text-align: center; color: #888; padding: 40px; }
+    }
+  }
+}
+
+
+/* ==========================================
+   MOBILE BOTTOM NAVS
+   ========================================== */
+.seller-bottom-nav {
+  position: fixed; bottom: 0; left: 0; width: 100%;
+  background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(24px); z-index: 50;
+  border-top: 1px solid #eaeaea; box-shadow: 0 -4px 20px rgba(0,0,0,0.04);
+  display: flex; justify-content: space-around; align-items: center;
+  height: 70px; padding-bottom: env(safe-area-inset-bottom);
+
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; flex: 1;
+    color: #999; text-decoration: none; font-size: 10px; font-weight: 600;
+    ion-icon { font-size: 22px; }
+
+    &.active {
+      color: #6c3ef4;
+      .active-pill {
+        background: rgba(108,62,244,0.1); border-radius: 14px; padding: 6px 16px;
+        ion-icon { color: #6c3ef4; font-size: 20px; }
+      }
+    }
+
+    &.create-live-btn {
+      color: #ef4444; margin-top: -16px;
+      .live-fab {
+        width: 52px; height: 52px; border-radius: 50%;
+        background: linear-gradient(135deg, #ef4444, #f87171);
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        ion-icon { font-size: 24px; color: #fff; }
+      }
+    }
+  }
+}
+
+

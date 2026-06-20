@@ -1,0 +1,23 @@
+.input-glow:focus-within {
+  box-shadow: 0 0 0 2px rgba(0, 88, 190, 0.1);
+  border-color: #0058be;
+}
+
+.bg-gradient-modern {
+  background: linear-gradient(135deg, #0058be 0%, #2170e4 50%, #6063ee 100%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.material-symbols-outlined.fill {
+  font-variation-settings: 'FILL' 1;
+}
+
+ion-content {
+  --background: transparent;
+}

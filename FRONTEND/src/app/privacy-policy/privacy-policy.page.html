@@ -1,0 +1,287 @@
+<ion-header>
+  <ion-toolbar class="privacy-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login" text="" class="privacy-back-btn"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="privacy-toolbar-title">
+      <div class="toolbar-title-inner">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        <span>Kebijakan Privasi</span>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+  <!-- Progress bar scroll -->
+  <div class="privacy-progress-bar">
+    <div class="privacy-progress-fill" [style.width.%]="scrollProgress"></div>
+  </div>
+</ion-header>
+
+<ion-content
+  #policyContent
+  [scrollEvents]="true"
+  (ionScroll)="onContentScroll($event)"
+  class="privacy-content ion-padding bg-[#f4f7fc]">
+
+  <div class="privacy-doc bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,82,204,0.06)] p-6 md:p-10 my-4 mx-auto max-w-3xl border border-gray-100">
+
+    <!-- Header Dokumen -->
+    <div class="border-b border-gray-100 pb-6 mb-8">
+      <h1 class="text-3xl font-extrabold tracking-tight mb-2 bg-gradient-to-r from-[#0052CC] to-[#4C9AFF] bg-clip-text text-transparent">
+        Kebijakan Privasi &amp; Ketentuan Layanan
+      </h1>
+      <p class="text-sm text-gray-500 font-medium">
+        StreamCart App — Manajemen StreamCart App<br>
+        <span class="text-gray-400">Berlaku sejak &amp; terakhir diperbarui: 6 Juni 2026</span>
+      </p>
+    </div>
+
+    <!-- Pendahuluan -->
+    <p class="text-[15px] leading-relaxed text-gray-700 mb-10">
+      Selamat datang di <strong class="text-gray-900">StreamCart</strong> — platform belanja siaran langsung (<em>live shopping</em>) terpercaya milik Tim Pengembang StreamCart. Dokumen ini merupakan Kebijakan Privasi sekaligus Ketentuan Penggunaan Layanan yang berlaku bagi seluruh pengguna, mencakup Pembeli (<em>Buyer</em>), Penjual (<em>Seller</em>), dan Administrator Platform. Dengan menggunakan layanan StreamCart, Anda dinyatakan telah membaca, memahami, dan menyetujui seluruh ketentuan yang tercantum di bawah ini.
+    </p>
+
+    <!-- ─── SECTION 1 ─── -->
+    <div class="mb-10">
+      <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <span class="text-[#0052CC] bg-[#eef4ff] px-2 py-1 rounded-md text-sm font-black">01</span>
+        Data Pribadi yang Kami Kumpulkan
+      </h2>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">1.1 Data Identitas &amp; Akun</h3>
+      <p class="text-[15px] text-gray-600 mb-3 ml-10">Saat mendaftar dan menggunakan StreamCart, kami mengumpulkan informasi berikut:</p>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li><strong class="text-gray-800">Identitas:</strong> Nama lengkap, nama pengguna, dan foto profil.</li>
+        <li><strong class="text-gray-800">Kontak:</strong> Alamat email aktif dan nomor telepon untuk verifikasi akun.</li>
+        <li><strong class="text-gray-800">Keamanan:</strong> Kata sandi yang disimpan dalam bentuk hash terenkripsi (bcrypt) — tidak pernah disimpan dalam bentuk teks biasa.</li>
+        <li><strong class="text-gray-800">Peran Akun:</strong> Status Anda sebagai Pembeli, Penjual, atau Administrator.</li>
+        <li><strong class="text-gray-800">Alamat:</strong> Alamat lengkap pengiriman, termasuk provinsi, kota, dan kecamatan.</li>
+      </ul>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">1.2 Data Penjual (Seller)</h3>
+      <p class="text-[15px] text-gray-600 mb-3 ml-10">Pengguna yang terdaftar sebagai Penjual wajib melengkapi informasi tambahan:</p>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li><strong class="text-gray-800">Nama &amp; Deskripsi Toko:</strong> Identitas usaha yang ditampilkan kepada publik di platform.</li>
+        <li><strong class="text-gray-800">Rekening Bank:</strong> Nama bank, nomor rekening, dan nama pemilik rekening untuk keperluan pencairan dana penjualan.</li>
+        <li><strong class="text-gray-800">Data Produk &amp; Sesi Live:</strong> Informasi produk yang dijual, harga, stok, dan rekaman aktivitas sesi siaran langsung.</li>
+      </ul>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">1.3 Data Transaksi &amp; Pembayaran</h3>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li><strong class="text-gray-800">Riwayat Pesanan:</strong> Detail produk yang dibeli, jumlah, harga satuan, dan total pembayaran.</li>
+        <li><strong class="text-gray-800">Bukti Pembayaran:</strong> Berkas unggahan bukti transfer (gambar atau PDF) yang Anda kirimkan untuk setiap transaksi.</li>
+        <li><strong class="text-gray-800">Catatan Bank Admin:</strong> Informasi rekening bank tujuan transfer yang disimpan sebagai histori permanen pada setiap pesanan.</li>
+        <li><strong class="text-gray-800">Status Pesanan:</strong> Rekam jejak perubahan status pesanan dari <em>Pending</em> hingga <em>Selesai</em>.</li>
+      </ul>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">1.4 Data Teknis &amp; Penggunaan</h3>
+      <ul class="list-disc list-outside ml-14 text-[15px] text-gray-600 space-y-2">
+        <li>Informasi perangkat (model, sistem operasi, dan versi aplikasi).</li>
+        <li>Catatan aktivitas dan log analitik untuk meningkatkan performa aplikasi.</li>
+        <li>Alamat IP dan data jaringan untuk keperluan keamanan dan pencegahan penipuan.</li>
+        <li>Data percakapan di fitur <em>live chat</em> untuk keperluan moderasi dan histori.</li>
+      </ul>
+    </div>
+
+    <!-- ─── SECTION 2 ─── -->
+    <div class="mb-10">
+      <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <span class="text-[#0052CC] bg-[#eef4ff] px-2 py-1 rounded-md text-sm font-black">02</span>
+        Mekanisme Pembayaran &amp; Alur Transaksi
+      </h2>
+
+      <p class="text-[15px] leading-relaxed text-gray-600 mb-6 ml-10">
+        StreamCart menerapkan sistem pembayaran manual berbasis transfer bank dengan mekanisme escrow yang diawasi oleh Administrator Platform. Berikut adalah alur transaksi yang berlaku:
+      </p>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">2.1 Pembuatan Pesanan &amp; Instruksi Pembayaran</h3>
+      <p class="text-[15px] text-gray-600 mb-3 ml-10">Setelah Pembeli melakukan pemesanan, sistem akan secara otomatis menampilkan:</p>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li>Nama bank tujuan transfer milik Administrator Platform.</li>
+        <li>Nomor rekening bank beserta nama pemilik rekening yang terverifikasi.</li>
+        <li>Jumlah transfer yang harus dibayarkan secara tepat sesuai total pesanan.</li>
+        <li>Instruksi bahwa transfer harus dilakukan sebelum mengunggah bukti pembayaran.</li>
+      </ul>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">2.2 Unggah Bukti Pembayaran</h3>
+      <p class="text-[15px] text-gray-600 mb-3 ml-10">Setelah melakukan transfer, Pembeli wajib mengunggah bukti pembayaran melalui formulir yang tersedia di halaman detail pesanan. Ketentuan unggah:</p>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li>Format file yang diterima: <strong class="text-gray-800">JPG, JPEG, PNG, atau PDF</strong>.</li>
+        <li>Ukuran berkas maksimum: <strong class="text-gray-800">5 MB</strong>.</li>
+        <li>Status pesanan akan berubah otomatis menjadi <strong class="text-gray-800 text-yellow-600">⏳ Menunggu Konfirmasi Admin</strong> setelah unggahan berhasil.</li>
+        <li>Bukti pembayaran hanya dapat diunggah selama status pesanan masih <em>Pending</em>.</li>
+        <li>Seluruh berkas bukti pembayaran tersimpan secara aman di server kami sebagai histori permanen.</li>
+      </ul>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">2.3 Notifikasi Otomatis ke Administrator</h3>
+      <p class="text-[15px] leading-relaxed text-gray-600 mb-8 ml-10">
+        Setelah Pembeli berhasil mengunggah bukti pembayaran, sistem StreamCart akan secara otomatis mengirimkan <strong class="text-gray-800">notifikasi melalui email</strong> kepada Administrator Platform. Notifikasi ini berisi detail pesanan, informasi Pembeli, dan tautan ke bukti pembayaran yang diunggah, sehingga Administrator dapat segera melakukan verifikasi.
+      </p>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">2.4 Verifikasi &amp; Konfirmasi oleh Administrator</h3>
+      <p class="text-[15px] text-gray-600 mb-3 ml-10">Administrator Platform memiliki kewenangan penuh untuk memverifikasi keabsahan setiap bukti pembayaran. Hasil verifikasi akan mengubah status pesanan menjadi salah satu dari berikut:</p>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li>
+          <strong class="text-green-700">✅ Success (Berhasil):</strong> Ditetapkan apabila bukti pembayaran dinyatakan valid dan nominal transfer sesuai. Pesanan dilanjutkan untuk diproses oleh Penjual.
+        </li>
+        <li>
+          <strong class="text-red-600">❌ Fail (Gagal):</strong> Ditetapkan apabila bukti pembayaran terbukti palsu, tidak valid, atau tidak sesuai nominal. Pesanan dibatalkan dan Pembeli akan dihubungi melalui email.
+        </li>
+        <li>Hanya Administrator yang memiliki hak untuk mengubah status pembayaran ke <em>Success</em> atau <em>Fail</em>. Penjual dan Pembeli tidak dapat mengubah status ini.</li>
+      </ul>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">2.5 Escrow &amp; Pencairan Dana ke Penjual</h3>
+      <p class="text-[15px] leading-relaxed text-gray-600 mb-3 ml-10">
+        StreamCart menerapkan sistem <strong class="text-gray-800">Escrow</strong> untuk melindungi kedua belah pihak dalam setiap transaksi:
+      </p>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li>Dana Pembeli ditahan oleh Platform hingga Pembeli mengkonfirmasi bahwa barang telah diterima.</li>
+        <li>Setelah konfirmasi penerimaan barang oleh Pembeli, dana dilepas (<em>release</em>) secara otomatis ke saldo Penjual.</li>
+        <li>Penjual dapat mencairkan saldo ke rekening bank yang telah terdaftar kapan saja.</li>
+      </ul>
+    </div>
+
+    <!-- ─── SECTION 3 ─── -->
+    <div class="mb-10">
+      <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <span class="text-[#0052CC] bg-[#eef4ff] px-2 py-1 rounded-md text-sm font-black">03</span>
+        Biaya Layanan Platform &amp; Peran Administrator
+      </h2>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">3.1 Biaya Layanan Platform (Platform Fee)</h3>
+      <p class="text-[15px] leading-relaxed text-gray-600 mb-3 ml-10">
+        Untuk mendukung operasional dan pengembangan layanan, StreamCart membebankan <strong class="text-gray-800">biaya layanan platform sebesar 5% (lima persen)</strong> dari setiap nilai transaksi yang berhasil diselesaikan.
+      </p>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li>Biaya layanan 5% dipotong secara otomatis dari dana penjualan pada saat pelepasan escrow ke saldo Penjual.</li>
+        <li>Penjual menerima <strong class="text-gray-800">95%</strong> dari total nilai transaksi bersih setelah dikurangi biaya layanan platform.</li>
+        <li>Administrator Platform menerima 5% sebagai biaya operasional yang mencakup biaya infrastruktur, keamanan sistem, verifikasi pembayaran, dan layanan pelanggan.</li>
+        <li>Contoh: Jika nilai transaksi adalah <strong class="text-gray-800">Rp 100.000</strong>, maka Penjual menerima <strong class="text-green-700">Rp 95.000</strong> dan Platform memperoleh <strong class="text-[#0052CC]">Rp 5.000</strong> sebagai biaya layanan.</li>
+        <li>Biaya ini tidak dikenakan pada transaksi yang dibatalkan atau gagal verifikasi pembayaran.</li>
+        <li>Besaran biaya layanan platform dapat berubah sewaktu-waktu dengan pemberitahuan minimal 14 (empat belas) hari sebelum berlaku efektif.</li>
+      </ul>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">3.2 Peran &amp; Kewenangan Administrator</h3>
+      <p class="text-[15px] text-gray-600 mb-3 ml-10">Administrator Platform memiliki kewenangan dan tanggung jawab sebagai berikut:</p>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li>Memverifikasi dan mengkonfirmasi setiap bukti pembayaran yang dikirimkan oleh Pembeli.</li>
+        <li>Mengubah status pesanan menjadi <em>Success</em> atau <em>Fail</em> berdasarkan hasil verifikasi.</li>
+        <li>Memantau seluruh transaksi di platform dan mendeteksi aktivitas mencurigakan atau penipuan.</li>
+        <li>Mengelola akun Penjual, termasuk proses registrasi dan verifikasi identitas Penjual baru.</li>
+        <li>Menangani sengketa transaksi antara Pembeli dan Penjual secara adil dan transparan.</li>
+        <li>Menjaga kerahasiaan data pengguna sesuai dengan kebijakan privasi ini.</li>
+      </ul>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">3.3 Tanggung Jawab Penjual</h3>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li>Penjual bertanggung jawab memastikan produk yang ditampilkan akurat, tersedia, dan sesuai deskripsi.</li>
+        <li>Penjual wajib mengirimkan produk segera setelah pembayaran dikonfirmasi oleh Administrator.</li>
+        <li>Penjual menyetujui pemotongan biaya layanan platform sebesar 5% dari setiap transaksi yang berhasil.</li>
+        <li>Penjual tidak diperkenankan melakukan transaksi di luar platform untuk menghindari biaya layanan.</li>
+        <li>Pelanggaran terhadap ketentuan ini dapat mengakibatkan penangguhan atau penghapusan akun Penjual.</li>
+      </ul>
+    </div>
+
+    <!-- ─── SECTION 4 ─── -->
+    <div class="mb-10">
+      <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <span class="text-[#0052CC] bg-[#eef4ff] px-2 py-1 rounded-md text-sm font-black">04</span>
+        Keamanan Data &amp; Perlindungan Privasi
+      </h2>
+
+      <p class="text-[15px] leading-relaxed text-gray-600 mb-6 ml-10">
+        Kami berkomitmen untuk menjaga keamanan data pribadi Anda dengan menerapkan standar keamanan informasi yang tinggi:
+      </p>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li>Seluruh data sensitif dienkripsi menggunakan protokol TLS/HTTPS dalam transmisi data.</li>
+        <li>Kata sandi disimpan menggunakan algoritma hashing bcrypt yang tidak dapat dibalik.</li>
+        <li>Server kami dilindungi firewall berlapis dan dipantau 24 jam sehari, 7 hari seminggu.</li>
+        <li>Berkas bukti pembayaran disimpan di server privat yang hanya dapat diakses oleh Administrator terverifikasi.</li>
+        <li>Hanya staf berwenang dengan kebutuhan operasional yang dapat mengakses data pengguna.</li>
+        <li>Data disimpan selama akun aktif dan dihapus dalam waktu 30 hari setelah permintaan penghapusan akun.</li>
+        <li>Kami tidak menjual, menyewakan, atau membagikan data pribadi Anda kepada pihak ketiga untuk keperluan komersial tanpa persetujuan Anda.</li>
+      </ul>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">4.1 Hak-Hak Pengguna</h3>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li><strong class="text-gray-800">Akses:</strong> Anda berhak melihat seluruh data pribadi yang kami simpan tentang Anda melalui halaman profil.</li>
+        <li><strong class="text-gray-800">Koreksi:</strong> Anda dapat memperbarui informasi yang tidak akurat kapan saja melalui pengaturan profil.</li>
+        <li><strong class="text-gray-800">Penghapusan:</strong> Anda dapat mengajukan permintaan penghapusan akun dan data Anda sesuai regulasi yang berlaku.</li>
+        <li><strong class="text-gray-800">Portabilitas:</strong> Anda dapat meminta ekspor data Anda dalam format yang dapat dibaca oleh mesin.</li>
+        <li><strong class="text-gray-800">Keberatan:</strong> Anda dapat mengajukan keberatan atas pemrosesan data Anda untuk tujuan tertentu.</li>
+      </ul>
+
+      <h3 class="text-base font-bold text-gray-800 mb-3 ml-10">4.2 Penggunaan Cookie &amp; Analitik</h3>
+      <p class="text-[15px] leading-relaxed text-gray-600 mb-8 ml-10">
+        StreamCart menggunakan teknologi analitik untuk memahami pola penggunaan aplikasi dan meningkatkan layanan kami. Data analitik dikumpulkan secara anonim dan tidak dapat dikaitkan dengan identitas pribadi Anda tanpa persetujuan. Anda dapat menonaktifkan pengumpulan data analitik melalui pengaturan privasi pada perangkat Anda.
+      </p>
+    </div>
+
+    <!-- ─── SECTION 5 ─── -->
+    <div class="mb-10">
+      <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <span class="text-[#0052CC] bg-[#eef4ff] px-2 py-1 rounded-md text-sm font-black">05</span>
+        Larangan &amp; Sanksi
+      </h2>
+
+      <p class="text-[15px] text-gray-600 mb-3 ml-10">Pengguna dilarang keras melakukan tindakan berikut di platform StreamCart:</p>
+      <ul class="list-disc list-outside ml-14 mb-8 text-[15px] text-gray-600 space-y-2">
+        <li>Mengunggah bukti pembayaran yang dipalsukan, direkayasa, atau tidak sesuai dengan transaksi sebenarnya.</li>
+        <li>Melakukan transaksi di luar platform untuk menghindari biaya layanan atau pengawasan Administrator.</li>
+        <li>Menggunakan akun untuk aktivitas penipuan, penyebaran konten ilegal, atau merugikan pengguna lain.</li>
+        <li>Mencoba mengakses data pengguna lain secara tidak sah atau memanipulasi sistem platform.</li>
+        <li>Mendaftarkan informasi rekening bank palsu atau menyamarkan identitas untuk keperluan pencairan dana.</li>
+      </ul>
+      <p class="text-[15px] leading-relaxed text-gray-600 ml-10">
+        Pelanggaran terhadap ketentuan di atas dapat mengakibatkan <strong class="text-gray-800">penangguhan sementara atau penghapusan permanen akun</strong>, pemblokiran akses dana yang tersimpan di platform, serta pelaporan kepada pihak yang berwajib sesuai hukum yang berlaku di Indonesia.
+      </p>
+    </div>
+
+    <!-- ─── SECTION 6 ─── -->
+    <div class="mb-10">
+      <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+        <span class="text-[#0052CC] bg-[#eef4ff] px-2 py-1 rounded-md text-sm font-black">06</span>
+        Hubungi Kami
+      </h2>
+
+      <p class="text-[15px] leading-relaxed text-gray-600 ml-10 mb-4">
+        Jika Anda memiliki pertanyaan, masukan, atau keluhan terkait kebijakan privasi ini, silakan hubungi kami melalui saluran berikut:
+      </p>
+      <ul class="list-disc list-outside ml-14 text-[15px] text-gray-600 space-y-2">
+        <li>Email: <span class="font-medium text-[#0052CC]">support&#64;streamcart.id</span></li>
+        <li>WhatsApp Customer Service: <span class="font-medium text-[#0052CC]">083126435560</span></li>
+      </ul>
+    </div>
+
+    <!-- Penutup -->
+    <div class="closing-box bg-gray-50 rounded-xl p-6 mt-8 border border-gray-100 text-center" #bottomAnchor>
+      <p class="text-sm font-medium text-gray-700 leading-relaxed">
+        Dengan menggunakan layanan StreamCart, Anda menyatakan telah membaca, memahami, dan menyetujui seluruh isi Kebijakan Privasi dan Ketentuan Layanan ini. Kami berhak memperbarui kebijakan ini sewaktu-waktu dan akan memberitahu Anda melalui email atau notifikasi dalam aplikasi setidaknya 14 hari sebelum perubahan berlaku.
+      </p>
+    </div>
+
+  </div>
+</ion-content>
+
+<!-- Footer: Tombol Setuju -->
+<ion-footer class="privacy-footer">
+  <div class="privacy-footer-content">
+    <p class="scroll-hint" *ngIf="!hasScrolledToBottom">
+      <ion-icon name="arrow-down-outline"></ion-icon>
+      Scroll ke bawah untuk membaca seluruh kebijakan
+    </p>
+    <p class="scroll-hint scroll-hint--done" *ngIf="hasScrolledToBottom">
+      <ion-icon name="checkmark-circle-outline"></ion-icon>
+      Anda telah membaca seluruh kebijakan privasi
+    </p>
+
+    <ion-button
+      id="btn-setuju-lanjutkan"
+      expand="block"
+      class="agree-btn"
+      [disabled]="!hasScrolledToBottom"
+      (click)="onAgree()">
+      <ion-icon slot="start" name="shield-checkmark-outline"></ion-icon>
+      Setuju &amp; Lanjutkan
+    </ion-button>
+  </div>
+</ion-footer>

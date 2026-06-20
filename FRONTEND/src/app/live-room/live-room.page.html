@@ -1,0 +1,120 @@
+<ion-content [fullscreen]="true" class="live-content">
+  <div class="video-container">
+    <video #videoElement autoplay playsinline [muted]="isHost" class="video-placeholder" style="object-fit: cover;"></video>
+    
+    <!-- LOADING INDICATOR -->
+    <div *ngIf="isWaitingForHost" class="waiting-host-overlay flex-center">
+      <ion-spinner name="crescent" color="light"></ion-spinner>
+      <p class="waiting-text">Menunggu Host Memulai Siaran...</p>
+    </div>
+
+    <div class="top-overlay">
+      <div class="seller-info" style="display: flex; align-items: center; background: rgba(0, 0, 0, 0.4); padding: 4px 12px 4px 4px; border-radius: 30px; max-width: 70%; backdrop-filter: blur(4px);">
+        <ion-avatar style="width: 36px; height: 36px; border: 2px solid white; flex-shrink: 0;">
+          <img [src]="'https://ui-avatars.com/api/?name=' + (sessionData?.seller_name || 'Host') + '&background=dbeafe&color=1d4ed8'" />
+        </ion-avatar>
+        <div class="seller-details" style="margin-left: 8px; display: flex; flex-direction: column; overflow: hidden;">
+          <h2 class="seller-name" style="color: white; font-size: 13px; font-weight: bold; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ sessionData?.seller_name || 'Streamer' }}</h2>
+          <span class="viewer-count" style="display: flex; align-items: center; gap: 4px; font-size: 11px; color: #e0e0e0; margin-top: 2px;">
+            <ion-icon name="eye"></ion-icon> {{ viewerCount || 0 }} Penonton
+          </span>
+        </div>
+      </div>
+      <ion-button *ngIf="!isHost" fill="clear" color="light" class="close-btn" routerLink="/home">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+      
+      <ion-button *ngIf="isHost" color="danger" class="close-btn" (click)="endLive()" style="margin-right: 10px; --border-radius: 20px; font-weight: bold; --padding-start: 15px; --padding-end: 15px; font-size: 12px; height: 32px;">
+        Akhiri Live
+      </ion-button>
+    </div>
+
+    <!-- Pinned Product Overlay -->
+    <div class="pinned-products-wrapper" *ngIf="pinnedProducts && pinnedProducts.length > 0">
+      <div class="pinned-product-overlay glass-panel" *ngFor="let pinned of pinnedProducts" (click)="$event.stopPropagation()">
+        <div class="pinned-product-content">
+          <img *ngIf="pinned.image_url" [src]="pinned.image_url" onerror="this.onerror=null;this.src='';" class="pinned-image" />
+          <div *ngIf="!pinned.image_url" class="pinned-image placeholder-image">
+            <ion-icon name="image-outline"></ion-icon>
+          </div>
+          <div class="pinned-details">
+            <span class="pinned-badge">Sedang Disematkan</span>
+            <p class="pinned-title">{{ pinned.name }}</p>
+            <p class="pinned-price">Rp {{ pinned.price | number }}</p>
+          </div>
+        </div>
+        <div class="pinned-actions">
+          <ion-button *ngIf="!isHost" class="buy-btn" expand="block" color="danger" (click)="buyProduct(pinned)">
+            BELI SEKARANG
+          </ion-button>
+          <ion-button *ngIf="isHost" class="unpin-btn" color="medium" expand="block" fill="outline" (click)="pinProduct(pinned)">
+            Lepas Sematan
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-overlay">
+      <div class="chat-container scrollable-chat">
+        <div class="chat-message" *ngFor="let msg of chatMessages">
+          <div class="chat-bubble">
+            <span class="sender" [style.color]="msg.color">{{ msg.sender }}</span>
+            <span class="text">{{ msg.text }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <div class="chat-input-wrapper glass-panel" (click)="$event.stopPropagation()">
+          <ion-input [(ngModel)]="chatMessage" placeholder="Ketik komentar..." (keyup.enter)="sendMessage()"></ion-input>
+          <ion-button fill="clear" (click)="sendMessage()">
+            <ion-icon name="send" color="primary"></ion-icon>
+          </ion-button>
+        </div>
+        
+        <ion-button class="product-btn" (click)="toggleProducts()">
+          <ion-icon name="bag-handle"></ion-icon>
+          <ion-badge color="danger" *ngIf="products.length > 0">{{ products.length }}</ion-badge>
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <ion-modal [isOpen]="isProductsOpen" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.8]" (didDismiss)="isProductsOpen = false">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-title>Produk Live</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding product-modal-content">
+        <ion-list lines="none">
+          <ion-item *ngFor="let prod of products" class="product-item">
+            <ion-thumbnail slot="start" (click)="viewDetail(prod)" class="cursor-pointer">
+              <img *ngIf="prod.image_url" [src]="prod.image_url" onerror="this.onerror=null;this.src='';" />
+              <div *ngIf="!prod.image_url" style="width: 100%; height: 100%; background: #eee; display: flex; align-items: center; justify-content: center;">
+                <ion-icon name="image-outline" style="color: #999; font-size: 24px;"></ion-icon>
+              </div>
+            </ion-thumbnail>
+            <ion-label (click)="viewDetail(prod)" class="cursor-pointer">
+              <h2>{{ prod.name }}</h2>
+              <p class="price">Rp {{ prod.price | number }}</p>
+              <p class="stock">Sisa: {{ prod.stock }}</p>
+            </ion-label>
+            <ion-button *ngIf="!isHost" slot="end" fill="clear" color="primary" (click)="addToCart(prod)" style="margin-right: 8px;">
+              <ion-icon name="cart-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button *ngIf="!isHost" slot="end" (click)="buyProduct(prod)" class="buy-btn">
+              Beli
+            </ion-button>
+            <ion-button *ngIf="isHost" slot="end" [color]="isProductPinned(prod) ? 'medium' : 'warning'" fill="outline" style="--border-radius: 8px;" (click)="pinProduct(prod)">
+              <ion-icon [name]="isProductPinned(prod) ? 'close-outline' : 'pin-outline'" slot="start"></ion-icon>
+              {{ isProductPinned(prod) ? 'Lepas' : 'Sematkan' }}
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>
