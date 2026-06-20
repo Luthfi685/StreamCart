@@ -8,4 +8,4 @@ StreamCart adalah platform Live Streaming E-Commerce (Shoppertainment) modern ya
 - 📁 **FRONTEND**: Berisi aplikasi *mobile/web* interaktif menggunakan **Ionic/Angular**.
 - 📁 **PYTHON_API**: Berisi *microservice* cerdas (Machine Learning) untuk sistem rekomendasi produk secara *real-time*.
 
-Dibuat dengan ❤️ untuk presentasi tugas akhir/skripsi.
+Dibuat untuk presentasi tugas akhir/skripsi.
