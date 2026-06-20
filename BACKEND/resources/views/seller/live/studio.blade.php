@@ -65,7 +65,7 @@
                     <ion-icon name="camera-reverse" class="text-2xl"></ion-icon>
                 </button>
                 <button onclick="toggleRatio()" id="ratioBtn" class="px-4 h-12 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md text-white flex items-center justify-center font-bold text-sm transition-all shadow-lg" title="Ganti Rasio Ukuran Layar">
-                    16:9
+                    4:3
                 </button>
             </div>
         </div>
@@ -138,7 +138,7 @@ let isVideoOn = false;
 let isAudioOn = false;
 
 let currentFacingMode = "user"; // "user" (depan) atau "environment" (belakang)
-let currentRatio = "16:9"; // "16:9" atau "4:3"
+let currentRatio = "4:3"; // "16:9" atau "4:3"
 
 async function startCamera() {
     try {
@@ -266,7 +266,7 @@ async function toggleRatio() {
         setTimeout(() => {
             const videoEl = parentDiv.querySelector('video');
             if(videoEl) {
-                videoEl.style.objectFit = 'contain';
+                videoEl.style.objectFit = 'cover';
                 videoEl.style.backgroundColor = '#000';
             }
         }, 500);
