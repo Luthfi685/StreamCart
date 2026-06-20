@@ -25,6 +25,7 @@ export class HomePage implements OnInit, OnDestroy {
   unreadNotifCount = 0;
   private cartSub!: Subscription;
   private notifSub!: Subscription;
+  private userSub!: Subscription;
 
   constructor(
     private http: HttpClient,
@@ -48,6 +49,7 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.cartSub) this.cartSub.unsubscribe();
     if (this.notifSub) this.notifSub.unsubscribe();
+    if (this.userSub) this.userSub.unsubscribe();
   }
 
   goToCart() {
@@ -60,7 +62,8 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    this.auth.user$.subscribe(user => {
+    if (this.userSub) this.userSub.unsubscribe();
+    this.userSub = this.auth.user$.subscribe(user => {
       if (user) {
         this.isSeller = (user.role === 'seller');
       }

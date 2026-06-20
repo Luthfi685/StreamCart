@@ -194,9 +194,8 @@ setTimeout(function(){
 
         // Add realtime stats for seller
         if ($user->role === 'seller') {
-            $userData['products_count'] = \App\Models\Product::where('seller_id', $user->id)->count();
-            $userData['followers_count'] = rand(1000, 15000);
-            $userData['chat_response_rate'] = rand(90, 100);
+            $userData['products_count']   = \App\Models\Product::where('seller_id', $user->id)->count();
+            $userData['followers_count']  = 0; // Fitur follow belum diimplementasi
         }
 
         return response()->json($userData);

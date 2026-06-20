@@ -20,6 +20,7 @@ export class TransactionsPage implements OnInit, OnDestroy {
   currentUser: any = null;
   cartCount = 0;
   private cartSub!: Subscription;
+  private userSub!: Subscription;
 
   constructor(
     private orderService: OrderService,
@@ -37,6 +38,7 @@ export class TransactionsPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.cartSub) this.cartSub.unsubscribe();
+    if (this.userSub) this.userSub.unsubscribe();
   }
 
   goToCart() {
@@ -51,7 +53,8 @@ export class TransactionsPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    this.auth.user$.subscribe(user => {
+    if (this.userSub) this.userSub.unsubscribe();
+    this.userSub = this.auth.user$.subscribe(user => {
       if (user) {
         this.currentUser = user;
         this.userRole = user.role;

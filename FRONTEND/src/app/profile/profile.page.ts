@@ -30,6 +30,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   private pollingInterval: any;
   private cartSub!: Subscription;
   private notifSub!: Subscription;
+  private userSub!: Subscription;
 
   constructor(
     private toastController: ToastController,
@@ -41,7 +42,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.auth.user$.subscribe(user => {
+    this.userSub = this.auth.user$.subscribe(user => {
       if (user) {
         this.user = user;
       } else {
@@ -77,6 +78,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     if (this.pollingInterval) clearInterval(this.pollingInterval);
     if (this.cartSub) this.cartSub.unsubscribe();
     if (this.notifSub) this.notifSub.unsubscribe();
+    if (this.userSub) this.userSub.unsubscribe();
   }
 
   fetchActiveOrders() {

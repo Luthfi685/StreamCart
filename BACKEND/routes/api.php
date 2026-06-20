@@ -60,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::put('/profile', [AuthController::class, 'updateProfile']);
+    Route::post('/profile', [AuthController::class, 'updateProfile']); // Support method spoofing (_method: PUT via FormData)
     Route::put('/password', [AuthController::class, 'updatePassword']);
     Route::post('/register-seller', [AuthController::class, 'registerSeller']);
 
@@ -77,7 +78,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/orders/{id}/payment-proof', [OrderController::class, 'uploadPaymentProof']); // Buyer upload bukti bayar
         Route::post('/orders/{id}/confirm', [OrderController::class, 'confirmComplete']);
         Route::post('/orders/{id}/request-cancel', [OrderController::class, 'requestCancel']);
-        Route::post('/orders/{id}/respond-cancel', [OrderController::class, 'respondCancel']);
         Route::post('/orders/{id}/refund-info', [OrderController::class, 'submitRefundInfo']);
         Route::post('/orders/{id}/reviews', [\App\Http\Controllers\Api\ReviewController::class, 'submitReviews']);
         

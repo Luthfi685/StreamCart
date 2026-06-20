@@ -405,11 +405,12 @@ export class LiveRoomPage implements OnInit, OnDestroy {
   }
   
   private stopPolling() {
-      this.subscriptions = this.subscriptions.filter(s => {
-          if (s.closed) return false;
-          // Asumsi interval polling punya identifier unik atau kita filter berdasarkan logika
-          return true;
-      });
+    this.subscriptions.forEach(s => {
+      if (s && !s.closed) {
+        s.unsubscribe();
+      }
+    });
+    this.subscriptions = [];
   }
 
   private pollSessionStatus() {
