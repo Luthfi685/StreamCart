@@ -71,7 +71,29 @@ export class LoginPage implements OnInit {
       },
       error: (err) => {
         loading.dismiss();
-        this.showToast(err.error?.message || err.error?.error || 'Login gagal, periksa koneksi');
+
+        // Cek apakah error karena akun belum diverifikasi
+        const errors = err.error?.errors;
+        const isUnverified = errors?.email?.includes('unverified');
+
+        if (isUnverified) {
+          // Redirect ke halaman OTP dengan membawa email
+          this.showToast('Akun belum diverifikasi. Silakan cek email Anda untuk kode OTP.');
+          this.router.navigate(['/register'], {
+            queryParams: { email: this.email, step: 'otp' }
+          });
+          return;
+        }
+
+        // Ambil pesan error dari berbagai kemungkinan format Laravel
+        const errorMsg =
+          errors?.email?.[0] ||
+          errors?.message?.[0] ||
+          err.error?.message ||
+          err.error?.error ||
+          'Login gagal, periksa koneksi';
+
+        this.showToast(errorMsg);
       }
     });
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
@@ -26,12 +26,20 @@ export class RegisterPage implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     private auth: AuthService
   ) { }
 
   ngOnInit() {
+    // Jika di-redirect dari halaman Login karena akun belum terverifikasi
+    this.route.queryParams.subscribe(params => {
+      if (params['step'] === 'otp' && params['email']) {
+        this.email = params['email'];
+        this.isOtpModalOpen = true; // Langsung buka modal OTP
+      }
+    });
   }
 
   togglePassword() {
