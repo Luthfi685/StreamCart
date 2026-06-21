@@ -66,6 +66,11 @@ export class ProductDetailPage implements OnInit {
     this.router.navigate(['/cart']);
   }
 
+  visitStore() {
+    if (!this.product?.seller_id) return;
+    this.router.navigate(['/seller-store', this.product.seller_id]);
+  }
+
   async addToCart() {
     if (!this.product) return;
     

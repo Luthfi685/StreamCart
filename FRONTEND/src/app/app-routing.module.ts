@@ -104,6 +104,11 @@ export const routes: Routes = [
   {
     path: 'product-detail/:id',
     loadChildren: () => import('./product-detail/product-detail.module').then( m => m.ProductDetailPageModule)
+  },
+  {
+    path: 'seller-store/:sellerId',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./seller-store/seller-store.module').then( m => m.SellerStorePageModule)
   }
 ];
 

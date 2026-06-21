@@ -1,0 +1,117 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="white">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()" color="dark">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="font-bold text-gray-800 text-base">Profil Toko</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToCart()" color="dark" class="relative">
+        <ion-icon name="cart-outline" class="text-xl"></ion-icon>
+        <div *ngIf="cartCount > 0"
+          class="absolute top-1 right-1 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white">
+          {{ cartCount }}
+        </div>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg-gray-50">
+
+  <!-- Skeleton Loading -->
+  <div *ngIf="isLoading" class="p-4">
+    <ion-skeleton-text animated style="width: 100%; height: 120px; border-radius: 16px;"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 60%; height: 20px; margin-top: 16px;"></ion-skeleton-text>
+    <div class="grid grid-cols-2 gap-3 mt-4">
+      <ion-skeleton-text animated style="height: 200px; border-radius: 12px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="height: 200px; border-radius: 12px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="height: 200px; border-radius: 12px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="height: 200px; border-radius: 12px;"></ion-skeleton-text>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading" class="pb-6">
+
+    <!-- Banner & Info Toko -->
+    <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-6 pb-8">
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center text-white text-2xl font-bold shadow-lg border-2 border-white/30">
+          {{ getSellerInitial() }}
+        </div>
+        <div class="flex-1">
+          <h1 class="text-white font-bold text-xl leading-tight">
+            {{ seller?.store_name || seller?.name || 'Toko Seller' }}
+          </h1>
+          <div class="flex items-center gap-1 mt-1">
+            <ion-icon name="checkmark-circle" class="text-blue-300 text-sm"></ion-icon>
+            <span class="text-blue-200 text-xs font-medium">Terverifikasi</span>
+          </div>
+          <div class="flex items-center gap-3 mt-2">
+            <div class="flex items-center gap-1 text-white/80 text-xs">
+              <ion-icon name="cube-outline" class="text-sm"></ion-icon>
+              <span>{{ products.length }} Produk</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Store Description -->
+      <div *ngIf="seller?.store_description" class="mt-4 bg-white/10 rounded-xl p-3">
+        <p class="text-white/90 text-xs leading-relaxed">{{ seller.store_description }}</p>
+      </div>
+    </div>
+
+    <!-- Divider kartu membulat -->
+    <div class="bg-gray-50 -mt-3 rounded-t-3xl pt-5 px-4">
+
+      <!-- Header Produk -->
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-bold text-gray-800">Semua Produk</h2>
+        <span class="text-xs text-gray-400">{{ products.length }} item</span>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="products.length === 0" class="text-center py-16">
+        <ion-icon name="bag-outline" class="text-5xl text-gray-300 mb-3"></ion-icon>
+        <p class="text-sm text-gray-400 font-medium">Belum ada produk</p>
+        <p class="text-xs text-gray-400 mt-1">Toko ini belum menambahkan produk</p>
+      </div>
+
+      <!-- Grid Produk -->
+      <div *ngIf="products.length > 0" class="grid grid-cols-2 gap-3">
+        <div *ngFor="let product of products"
+          class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 active:scale-95 transition-transform"
+          (click)="viewProduct(product)">
+
+          <!-- Gambar Produk -->
+          <div class="relative w-full aspect-square bg-gray-100">
+            <img [src]="getProductImage(product)"
+              alt="{{ product.name }}"
+              class="w-full h-full object-cover"
+              onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop'">
+          </div>
+
+          <!-- Info Produk -->
+          <div class="p-3">
+            <p class="text-xs font-semibold text-gray-800 leading-tight line-clamp-2 mb-1">{{ product.name }}</p>
+            <p class="text-sm font-bold text-blue-600">Rp {{ product.price | number }}</p>
+            <div class="flex items-center justify-between mt-2">
+              <span class="text-[10px] text-gray-400">Stok: {{ product.stock }}</span>
+              <button
+                class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center active:bg-blue-700 transition-colors"
+                (click)="$event.stopPropagation(); addToCart(product)">
+                <ion-icon name="cart-outline" class="text-white text-sm"></ion-icon>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>
