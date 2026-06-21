@@ -71,7 +71,8 @@ class AuthService
         ]);
 
         try {
-            Mail::to($user->email)->send(new OtpMail($otpCode));
+            // Gunakan queue() bukan send() agar API langsung response tanpa nunggu SMTP
+            Mail::to($user->email)->queue(new OtpMail($otpCode));
         } catch (\Exception $e) {
             // Log error or ignore if SMTP is not configured yet
             \Log::error('Gagal kirim email OTP: ' . $e->getMessage());
@@ -152,7 +153,8 @@ class AuthService
         ]);
 
         try {
-            Mail::to($user->email)->send(new OtpMail($otpCode));
+            // Gunakan queue() agar resend OTP tidak membuat user nunggu lama
+            Mail::to($user->email)->queue(new OtpMail($otpCode));
         } catch (\Exception $e) {
             \Log::error('Gagal kirim email OTP ulang: ' . $e->getMessage());
         }
@@ -178,7 +180,8 @@ class AuthService
         ]);
 
         try {
-            Mail::to($user->email)->send(new ResetPasswordMail($otpCode));
+            // Gunakan queue() agar forgot password tidak lambat karena nunggu SMTP
+            Mail::to($user->email)->queue(new ResetPasswordMail($otpCode));
         } catch (\Exception $e) {
             \Log::error('Gagal kirim email Reset Password: ' . $e->getMessage());
         }
