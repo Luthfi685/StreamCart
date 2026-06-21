@@ -23,13 +23,20 @@ class AuthService
             ]);
         }
 
-        if (is_null($user->email_verified_at)) {
-            // Optional: Auto resend OTP when they try to login but unverified? 
-            // Or just give them a message to resend OTP.
+        // Blokir login HANYA jika otp_code masih ada (user benar-benar belum verifikasi OTP)
+        // Lebih akurat daripada cek email_verified_at karena ada kasus otp_code sudah null
+        // tapi email_verified_at belum ter-set (bug lama atau daftar via jalur lain)
+        if (!is_null($user->otp_code)) {
             throw ValidationException::withMessages([
                 'email' => ['unverified'],
                 'message' => ['Akun belum diverifikasi. Silakan masukkan kode OTP yang dikirim ke email Anda.']
             ]);
+        }
+
+        // Auto-heal: jika otp_code sudah null tapi email_verified_at belum ter-set,
+        // otomatis perbaiki data user agar tidak terjadi masalah di masa depan
+        if (is_null($user->email_verified_at)) {
+            $user->update(['email_verified_at' => now()]);
         }
 
         $token = $user->createToken('streamcart-token')->plainTextToken;
